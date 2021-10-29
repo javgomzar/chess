@@ -14,10 +14,14 @@ In this document we will include all substantial changes to the app.
 - `SECURITY`: For fixed vulnerabilities.
 
 ## [1.0.0] - 2020/10/29
-### ADDED
+### `ADDED`
 - First semi-stable version for a chess game with control over the two players. Thorough testing is needed.
-### DEPRECATED
+### `DEPRECATED`
 - Turn class is not needed.
-### MODIFIED
+### `MODIFIED`
 - `main.py` location changed.
 - `.gitignore` simplified.
+
+## [1.0.1] - 2020/10/29
+### `MODIFIED`
+- Minor change to square input.

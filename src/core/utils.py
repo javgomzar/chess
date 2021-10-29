@@ -28,7 +28,7 @@ def square_to_index(square: str) -> tuple:
     For example, `square_to_index('a2')` returns `(2,1)`.
     """
     result = None
-    if square:
+    if square and len(square) == 2:
         col_str = square[0]
         row_str = square[1]
         if 'a' <= col_str <= 'h' and '1' <= row_str <= '8':

@@ -1,5 +1,5 @@
 # APP
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 APP_NAME = "CHESS"
 
 # BOARD CONSTANTS
@@ -85,7 +85,7 @@ CHOOSE_PIECE_MSG = "Pick a piece to move: "
 CHOOSE_MOVE_MSG = "Pick a square to move that piece: "
 INVALID_COLOR_MSG = "The piece you chose is not yours."
 EMPTY_SQ_MSG = "The square you chose is empty."
-INVALID_SQ = "Invalid square input. Pick a letter between 'a' and 'h', and a number between 1 and 8."
+INVALID_SQ = "Invalid square input. Pick a letter between 'a' and 'h', and a number between 1 and 8; for example: e2."
 INVALID_MOVE_MSG = "Invalid move."
 INCOMPLETE_TURN_ERROR = "A turn was tried to be added without the last one being complete"
 INVALID_PIECE = "The piece has a non valid type."
