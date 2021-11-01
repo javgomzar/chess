@@ -13,6 +13,18 @@ In this document we will include all substantial changes to the app.
 - `FIXED`: For fixed errors.
 - `SECURITY`: For fixed vulnerabilities.
 
+
+## [1.0.2] - 2020/11/01
+### `ADDED`
+- First version for `README.md`.
+### `MODIFIED`
+- Changed the `__str__` method in `Piece.py`.
+- `is_finished` is now a class attribute in `Game.py`.
+
+## [1.0.1] - 2020/10/29
+### `MODIFIED`
+- Minor change to square input.
+
 ## [1.0.0] - 2020/10/29
 ### `ADDED`
 - First semi-stable version for a chess game with control over the two players. Thorough testing is needed.
@@ -21,7 +33,3 @@ In this document we will include all substantial changes to the app.
 ### `MODIFIED`
 - `main.py` location changed.
 - `.gitignore` simplified.
-
-## [1.0.1] - 2020/10/29
-### `MODIFIED`
-- Minor change to square input.

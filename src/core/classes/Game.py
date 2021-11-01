@@ -14,18 +14,31 @@ class Game():
         self.plies = []
         self.board = Board().init_std_board()
         self.previous_board = copy.deepcopy(self.board)
+        self.is_finished = False
 
 
     def add_ply(self, ply: Ply):
         """
-        Adds a ply to the history of the game, and executes its action.
+        Adds a ply to the history of the game if it's valid, and executes its action.
         """
         if len(self.plies) > 0:
-            previous_ply = self.plies[-1]
-            self.previous_board.execute_action(previous_ply)
+            self.previous_board.execute_action(self.plies[-1])
         self.plies.append(ply)
         self.board.execute_action(ply)
 
+    def validate_add_ply(self, ply: Ply):
+        if self.is_finished or (len(self.plies) == 0 and ply.color != WHITE) \
+                            or (len(self.plies) > 0 and ply.color == self.plies[-1].color):
+            return False
+        elif Rules().validate(ply, self.board, self.previous_board):
+            if ply.action == PROMOTE and not ply.promotion:
+                return False
+            self.add_ply(ply)
+            if Rules().is_finished(self.board, self.previous_board, opposite_color(ply.color)):
+                self.is_finished = True
+            return True
+        else:
+            return False
 
     def play(self):
         """
@@ -34,9 +47,7 @@ class Game():
         print(self.board)
         
         # Main loop
-        is_finished = False
-
-        while not is_finished:
+        while not self.is_finished:
             for color in [WHITE, BLACK]:
                 # Input loop
                 while True:
@@ -62,7 +73,7 @@ class Game():
                 
                 # Finishing condition
                 if Rules().is_finished(self.board, self.previous_board, opposite_color(color)):
-                    is_finished = True
+                    self.is_finished = True
                     if is_check:
                         print(f"{color} won!")
                     else:

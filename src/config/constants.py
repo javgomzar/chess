@@ -60,20 +60,20 @@ CASTLE = 'C'
 # Unicode representation
 UNICODE_DICT = {
     BLACK: {
-        KING: "\u265A ",
-        QUEEN: "\u265B ",
-        TOWER: "\u265C ",
-        BISHOP: "\u265D ",
-        KNIGHT: "\u265E ",
-        PAWN: "\u265F "
+        KING: "\u265A",
+        QUEEN: "\u265B",
+        TOWER: "\u265C",
+        BISHOP: "\u265D",
+        KNIGHT: "\u265E",
+        PAWN: "\u265F"
     },
     WHITE: {
-        KING: "\u2654 ", 
-        QUEEN: "\u2655 ",
-        TOWER: "\u2656 ",
-        BISHOP: "\u2657 ",
-        KNIGHT: "\u2658 ",
-        PAWN: "\u2659 "
+        KING: "\u2654", 
+        QUEEN: "\u2655",
+        TOWER: "\u2656",
+        BISHOP: "\u2657",
+        KNIGHT: "\u2658",
+        PAWN: "\u2659"
     }
 }
 

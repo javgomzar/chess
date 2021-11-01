@@ -1,4 +1,4 @@
-from src.config.constants import UNICODE_DICT
+from src.config.constants import UNICODE_DICT, BLACK,  WHITE
 from src.core.utils import get_piece_name, get_color
 
 
@@ -22,8 +22,14 @@ class Piece():
 
 
     def __str__(self) -> str:
+        try:
+            __IPYTHON__
+            unicode_dict = UNICODE_DICT
+        except NameError:
+            unicode_dict = {color:{key: value+' ' for key,value in UNICODE_DICT[color].items()} for color in [BLACK, WHITE]}
+
         if self.color and self.name:
-            return UNICODE_DICT[self.color][self.name]
+            return unicode_dict[self.color][self.name]
         else:
             return "  "
 
