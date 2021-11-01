@@ -14,6 +14,10 @@ In this document we will include all substantial changes to the app.
 - `SECURITY`: For fixed vulnerabilities.
 
 
+## [1.0.3] - 2020/11/01
+### `ADDED`
+- Added a Jupyter Notebook file called `interactive_notebook.ipynb` to be able to interact with the code without downloading it.
+
 ## [1.0.2] - 2020/11/01
 ### `ADDED`
 - First version for `README.md`.
