@@ -1,4 +1,4 @@
-from src.config.constants import BISHOP, BLACK, BLACK_NAMES, EMPTY_SQ_MSG, INVALID_COLOR_MSG, INVALID_PROMOTION, INVALID_SQ, KNIGHT, MOVE_NOT_VALID, PICK_COLOR_ERROR_MSG, PICK_COLOR_MSG, PROMOTE, QUEEN, TOWER, WHITE, WHITE_NAMES
+from src.config.constants import BISHOP, BLACK, BLACK_NAMES, EMPTY_SQ_MSG, INVALID_COLOR_MSG, INVALID_PROMOTION, INVALID_SQ, KNIGHT, INVALID_MOVE_MSG, PICK_COLOR_ERROR_MSG, PICK_COLOR_MSG, PROMOTE, QUEEN, TOWER, WHITE, WHITE_NAMES
 from src.core.utils import get_piece_name, opposite_color, square_to_index
 from .Board import Board
 from .Rules import Rules
@@ -15,6 +15,9 @@ class Game():
         self.board = Board().init_std_board()
         self.previous_board = copy.deepcopy(self.board)
         self.is_finished = False
+
+    def __bool__(self) -> bool:
+        return True
 
 
     def add_ply(self, ply: Ply):
@@ -53,7 +56,7 @@ class Game():
                 while True:
                     ply = self.ply_input(color)
                     if not Rules().validate(ply, self.board, self.previous_board):
-                        print(MOVE_NOT_VALID)
+                        print(INVALID_MOVE_MSG)
                     elif ply.action == PROMOTE:
                         ply.promotion = self.promotion_input()
                         break

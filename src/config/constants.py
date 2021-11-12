@@ -1,5 +1,5 @@
 # APP
-VERSION = "1.0.2"
+VERSION = "1.0.4"
 APP_NAME = "CHESS"
 
 # BOARD CONSTANTS
@@ -80,13 +80,12 @@ UNICODE_DICT = {
 # Messages
 PICK_COLOR_MSG = f"Pick a color ('{BLACK}' or '{WHITE}'): "
 PICK_COLOR_ERROR_MSG = f"That's not {BLACK} or {WHITE}."
-MOVE_NOT_VALID = "The move selected is not valid."
+INVALID_MOVE_MSG = "The move selected is not valid."
 CHOOSE_PIECE_MSG = "Pick a piece to move: "
 CHOOSE_MOVE_MSG = "Pick a square to move that piece: "
 INVALID_COLOR_MSG = "The piece you chose is not yours."
 EMPTY_SQ_MSG = "The square you chose is empty."
 INVALID_SQ = "Invalid square input. Pick a letter between 'a' and 'h', and a number between 1 and 8; for example: e2."
-INVALID_MOVE_MSG = "Invalid move."
 INCOMPLETE_TURN_ERROR = "A turn was tried to be added without the last one being complete"
 INVALID_PIECE = "The piece has a non valid type."
 INVALID_PROMOTION = "That's not a valid piece to promote."
@@ -102,3 +101,33 @@ DIRECTIONS = {
     TOWER: TOWER_DIRECTIONS,
     QUEEN: QUEEN_DIRECTIONS
 }
+
+# Paths & Filenames
+LOCAL_PATH = "D:/Code/Python/telegram_bot/"
+IMG_DICT = {
+    BLACK: {
+        PAWN: LOCAL_PATH + "media/Black/Pawn.png",
+        KNIGHT: LOCAL_PATH + "media/Black/Knight.png",
+        BISHOP: LOCAL_PATH + "media/Black/Bishop.png",
+        TOWER: LOCAL_PATH + "media/Black/Tower.png",
+        QUEEN: LOCAL_PATH + "media/Black/Queen.png",
+        KING: LOCAL_PATH + "media/Black/King.png"
+    },
+    WHITE: {
+        PAWN: LOCAL_PATH + "media/White/Pawn.png",
+        KNIGHT: LOCAL_PATH + "media/White/Knight.png",
+        BISHOP: LOCAL_PATH + "media/White/Bishop.png",
+        TOWER: LOCAL_PATH + "media/White/Tower.png",
+        QUEEN: LOCAL_PATH + "media/White/Queen.png",
+        KING: LOCAL_PATH + "media/White/King.png"
+    }
+}
+
+BOARD_IMG = LOCAL_PATH + "media/Board.png"
+TMP_FILENAME = "tmp.png"
+TMP_PATH = LOCAL_PATH + "media/tmp/" + TMP_FILENAME
+
+# Regular Expressions
+SQ_RE = "([a-h,A-H][1-8])"
+MOVE_RE = "([a-h,A-H][1-8]).*([a-h,A-H][1-8])"
+PIECE_RE =  "([K,Q,T,B,N])([a-h][1-8])"
