@@ -1,6 +1,7 @@
-from src.config.constants import BLACK, CASTLE, EN_PASSANT, INVALID_ACTION, MOVE, PROMOTE, WHITE, LEFT, RIGHT, TOWER, EMPTY_BOARD_STRING, EMPTY_SQ_MSG, INIT_BOARD, KING
+from src.config.constants import BLACK, BOARD_IMG, CASTLE, EN_PASSANT, INVALID_ACTION, MOVE, PROMOTE, WHITE, LEFT, RIGHT, TOWER, EMPTY_BOARD_STRING, EMPTY_SQ_MSG, INIT_BOARD, KING
 from src.core.classes.Piece import Piece
 from src.core.classes.Ply import Ply
+from PIL import Image
 
 class Board():
     """
@@ -169,3 +170,13 @@ class Board():
 
         else:
             raise Exception(INVALID_ACTION)
+
+    def image(self) -> Image:
+        board_img = Image.open(BOARD_IMG)
+
+        for color in [BLACK, WHITE]:
+            for position,piece in self.active_pieces[color].items():
+                piece_img = piece.image()
+                board_img.paste(piece_img, (50*(position[1] - 1), 50*(8 - position[0])), piece_img)
+        
+        return board_img

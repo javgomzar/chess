@@ -1,5 +1,6 @@
-from src.config.constants import UNICODE_DICT, BLACK,  WHITE
+from src.config.constants import IMG_DICT, UNICODE_DICT, BLACK,  WHITE
 from src.core.utils import get_piece_name, get_color
+from PIL import Image
 
 
 class Piece():
@@ -24,9 +25,10 @@ class Piece():
     def __str__(self) -> str:
         try:
             __IPYTHON__
-            unicode_dict = UNICODE_DICT
         except NameError:
             unicode_dict = {color:{key: value+' ' for key,value in UNICODE_DICT[color].items()} for color in [BLACK, WHITE]}
+        else:
+            unicode_dict = UNICODE_DICT
 
         if self.color and self.name:
             return unicode_dict[self.color][self.name]
@@ -40,3 +42,6 @@ class Piece():
 
     def __bool__(self) -> bool:
         return True
+
+    def image(self) -> Image:
+        return Image.open(IMG_DICT[self.color][self.name])
