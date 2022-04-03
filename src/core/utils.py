@@ -22,20 +22,6 @@ def sum_tuple(tuple1: tuple, tuple2: tuple) -> tuple:
     return (tuple1[0] + tuple2[0], tuple1[1] + tuple2[1])
 
 
-def square_to_index(square: str) -> tuple:
-    """
-    Returns a tuple with integer cartesian coordinates for a chess square in algebraic notation.
-    For example, `square_to_index('a2')` returns `(2,1)`.
-    """
-    result = None
-    if square and len(square) == 2:
-        col_str = square[0]
-        row_str = square[1]
-        if 'a' <= col_str <= 'h' and '1' <= row_str <= '8':
-            result = (int(row_str), ascii_lowercase[0:8].index(col_str) + 1)
-    return result
-
-
 def is_valid_position(position: tuple) -> bool:
     """
     Checks if a tuple has its coordinates between 1 and 8 (both included).
