@@ -1,4 +1,4 @@
-from core.classes.actions import FirstMove, Remove
+from src.core.classes.actions import FirstMove, Remove
 from src.core.classes.board_controller import BoardController
 from src.core.error_classes.errors import PositionError
 from src.config.constants import LEFT, RIGHT, PAWN
@@ -17,13 +17,18 @@ class Rules(metaclass=Singleton):
     """
     Class with all the methods relevant for chess rules. 
     """
-    def __init__(self) -> None:
-        pass
-
     def set_action(self, ply: Ply, controller: BoardController) -> None:
-        if not ply.piece.has_moved:
-            ply.action = FirstMove(ply.piece, ply.to_position)
-        
+        # MOVE
+        # CASTLE
+        # ENPASSANT
+        # PROMOTE
+
+        if isinstance(ply.piece, Pawn):
+            pass
+        elif isinstance(ply.piece, King):
+            pass
+        else:
+            ply.action = Move(ply.piece, ply.to_position)
 
     def validate(self, ply: Ply, controller: BoardController) -> bool:
         """
@@ -31,15 +36,15 @@ class Rules(metaclass=Singleton):
         and `False` if it's not valid. If the ply is valid, this method fills the action attribute for
         the ply.
         """
-        if not ply.piece.can_move(ply.start, ply.finish):
+        if not ply.piece.can_move(ply.to_position):
             return False
         
         current_board = controller.board.copy()
         previous_board = controller.get_previous_board()
-        piece_taken = current_board.get_piece(ply.finish)
+        piece_taken = current_board.get_piece(ply.to_position)
 
         # Can't take your own piece or move if the piece is pinned
-        if piece_taken.color == ply.color or self.is_pinned(ply, current_board):
+        if self.is_pinned(ply, current_board) or piece_taken and piece_taken.color == ply.color:
             return False
 
         # Blocks
@@ -48,10 +53,10 @@ class Rules(metaclass=Singleton):
 
         # Pawns are special
         elif isinstance(ply.piece, Pawn):
-            piece_taken = current_board.state[ply.finish]
+            piece_taken = current_board.state[ply.to_position]
 
             #Pawn diagonal moves
-            if ply.piece.is_capture(ply.start, ply.finish):
+            if ply.piece.is_capture(ply.to_position):
                 if piece_taken:
                     ply.set_action(Move)
                     result = True
@@ -62,7 +67,7 @@ class Rules(metaclass=Singleton):
                     result = False
 
             # Pawn advancements
-            elif ply.piece.can_move(ply.start, ply.finish) and not piece_taken:
+            elif ply.piece.can_move(ply.from_position, ply.to_position) and not piece_taken:
                 ply.set_action(Move)
                 result = True
             else:
@@ -70,23 +75,23 @@ class Rules(metaclass=Singleton):
 
             # Pawn promotions
             if result:
-                if ply.finish.row == ply.color.opposite_color().king_row_index:
+                if ply.to_position.row == ply.color.opposite_color().king_row_index:
                     ply.set_action(Promote)
             
             return result
 
         # Kings are also special
         elif isinstance(ply.piece, King):
-            if ply.piece.can_move(ply.start,ply.finish):
+            if ply.piece.can_move(ply.from_position,ply.to_position):
                 ply.set_action(Move)
                 return True
             
             # Castling
             elif not current_board.king_moved[ply.color]:
-                delta = ply.finish - ply.start
+                delta = ply.to_position - ply.from_position
                 side,direction = (RIGHT, Vector(1,0)) if delta.col > 0 else (LEFT, Vector(-1,0))
                 if delta.row == 0 and abs(delta.col) == 2 and not current_board.rook_moved[ply.color][side]:
-                    pointer = ply.start
+                    pointer = ply.from_position
                     possible_board = current_board.copy()
 
                     # Can't castle if there is a check in the way
@@ -94,7 +99,7 @@ class Rules(metaclass=Singleton):
                         if self.is_check(possible_board, ply.color):
                             break
                         pointer += direction
-                        possible_board = current_board.copy().move_piece(ply.start, pointer)
+                        possible_board = current_board.copy().move_piece(ply.from_position, pointer)
                     else:
                         ply.set_action(Castle)
                         return True
@@ -103,7 +108,7 @@ class Rules(metaclass=Singleton):
                     return False
             else:
                 return False
-        elif ply.piece.can_move(ply.start, ply.finish):
+        elif ply.piece.can_move(ply.from_position, ply.to_position):
             ply.set_action(Move)
             return True
         else:
@@ -114,18 +119,18 @@ class Rules(metaclass=Singleton):
         Checks if the ply is moving a piece to a square occupied by a piece 
         of the same color.
         """
-        finish_piece = board.state[ply.finish]
-        return finish_piece and finish_piece.color == ply.color
+        to_position_piece = board.state[ply.to_position]
+        return to_position_piece and to_position_piece.color == ply.color
 
     def en_passant(self, ply: Ply, current_board: Board, previous_board: Board) -> bool:
         """
         Checks if a ply is an "en passant" move.
         """
-        start_row = ply.start.row
-        valid_start_row, valid_finish_row, current_row, previous_row = (4,3,3,1) if ply.color == Black() else (5,6,4,6)
-        if start_row == valid_start_row and ply.finish.row == valid_finish_row:
-            current_pawn = current_board.state[current_row][ply.finish.col-1]
-            previous_pawn = previous_board.state[previous_row][ply.finish.col-1]
+        from_position_row = ply.from_position.row
+        valid_from_position_row, valid_to_position_row, current_row, previous_row = (4,3,3,1) if ply.color == Black() else (5,6,4,6)
+        if from_position_row == valid_from_position_row and ply.to_position.row == valid_to_position_row:
+            current_pawn = current_board.state[current_row][ply.to_position.col-1]
+            previous_pawn = previous_board.state[previous_row][ply.to_position.col-1]
             if current_pawn and previous_pawn \
             and current_pawn.name  == PAWN \
             and current_pawn.color != ply.color \
@@ -139,10 +144,10 @@ class Rules(metaclass=Singleton):
         would leave the king in check.
         """
         controller = BoardController(board)
-        piece_taken = board.get_piece(ply.finish)
+        piece_taken = board.get_piece(ply.to_position)
         if piece_taken:
             controller.execute(Remove(piece_taken))
-        controller.execute(Move(ply.piece, to_position=ply.finish))
+        controller.execute(Move(ply.piece, to_position=ply.to_position))
         result = self.is_check(board, ply.color)
         controller.undo()
         return result
@@ -154,11 +159,11 @@ class Rules(metaclass=Singleton):
         if ply.piece in [Pawn, Bishop, Rook, Queen]:
             
         
-            delta = ply.finish - ply.start
+            delta = ply.to_position - ply.from_position
             norm = max(abs(delta.col), abs(delta.row))
             direction = Vector(int(delta.col / norm), int(delta.row / norm))
-            pointer = ply.start + direction
-            while pointer != ply.finish:
+            pointer = ply.from_position + direction
+            while pointer != ply.to_position:
                 if board.state[pointer]:
                     return True
                 pointer = pointer + direction
@@ -225,7 +230,7 @@ class Rules(metaclass=Singleton):
         return result
 
 
-    def is_finished(self, current_board: Board, previous_board: Board, color: str) -> bool:
+    def is_to_positioned(self, current_board: Board, previous_board: Board, color: str) -> bool:
         for position in current_board.active_pieces[color].keys():
             valid_moves = self.get_valid_moves(position, current_board, previous_board)
             if valid_moves:

@@ -7,17 +7,19 @@ from src.core.classes.piece import Bishop, King, Knight, Pawn, Piece, Queen, Roo
 from PIL import Image
 from src.core.classes.position import Position
 
-@dataclass
+
 class Board():
     """
     Class for a chess board. If no arguments are given to the constructor,
     the board will start as the standard chess initial board.
     """
-    pieces : list[Piece] = field(default_factory=lambda:
-        [piece_class(color,Position(col,row),is_active=True,has_moved=False) 
-        for color in [Black(), White()] 
-        for col,class_pair in enumerate(zip([Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook],[Pawn]*8))
-        for row,piece_class in zip((color.king_row_index, color.pawn_row_index),class_pair)])
+    pieces : list[Piece]
+
+    def __init__(self, empty : bool = False):
+        self.pieces = [piece_class(color,Position(col,row),is_active=True,has_moved=False)
+                        for color in [Black(), White()] 
+                        for col,class_pair in enumerate(zip([Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook],[Pawn]*8))
+                        for row,piece_class in zip((color.king_row_index, color.pawn_row_index),class_pair)]
 
     def __str__(self) -> str:
         result = EMPTY_BOARD_STRING
@@ -31,7 +33,7 @@ class Board():
                 result = result.replace(str(row+1) + str(col+1), symbol)
         return result
 
-    def __contains__(self, piece: Piece):
+    def __contains__(self, piece: Piece) -> bool:
         for try_piece in self.pieces:
             if piece == try_piece:
                 return True
@@ -41,7 +43,7 @@ class Board():
     def __eq__(self, other) -> bool:
         if len(self.pieces) == len(other.pieces):
             for piece in self.pieces:
-                if not piece in other.pieces:
+                if piece not in other.pieces:
                     return False
             return True
         return False
@@ -76,7 +78,7 @@ class Board():
         return [piece for piece in self.pieces if piece.color == color and isinstance(piece, King)][0].position
 
     def copy(self):
-        board = Board()
+        board = Board([])
         for piece in self.pieces:
             board.pieces.append(piece.copy())
         return board

@@ -10,11 +10,11 @@ class Piece(ABC):
     move_vectors : list[Vector]
     image_path : str
     color : Color
-    position : Optional[Position]
+    position : Position
     is_active : bool
     has_moved : bool
 
-    def __init__(self, color: Color, position : Position = None, is_active : bool = False, has_moved : bool = False) -> None:
+    def __init__(self, color: Color, position : Position, is_active : bool = True, has_moved : bool = False) -> None:
         self.color = color
         self.image_path = color.image_folder_path + self.image_file
         self.unicode = self.unicode[color]
@@ -36,7 +36,7 @@ class Piece(ABC):
         return f"<{self.__class__.__name__} object : color={self.color}, position={self.position}>"
 
     def __eq__(self, other):
-        return self.__class__.__name__ == other.__class_.__name__ and \
+        return self.__class__ == other.__class__ and \
                self.color == other.color and \
                self.position == other.position and \
                self.is_active == other.is_active and \
@@ -48,11 +48,11 @@ class Piece(ABC):
     def copy(self):
         return self.__class__(self.color, self.position, self.is_active, self.has_moved)
 
-    def available_positions(self, from_position: Position) -> list[Position]:
+    def available_positions(self) -> list[Position]:
         positions = []
         for vector in self.move_vectors:
             try:
-                positions.append(from_position + vector)
+                positions.append(self.position + vector)
             except PositionError:
                 pass
             except Exception as err:
@@ -60,7 +60,7 @@ class Piece(ABC):
         return positions
 
     @abstractmethod
-    def can_move(self, from_position: Position, to_position: Position) -> bool:
+    def can_move(self, to_position: Position) -> bool:
         pass
 
 class Knight(Piece):
@@ -71,8 +71,8 @@ class Knight(Piece):
         White(): '\u2658'
     }
 
-    def can_move(self, from_position: Position, to_position: Position) -> bool:
-        delta = abs(to_position - from_position)
+    def can_move(self, to_position: Position) -> bool:
+        delta = abs(to_position - self.position)
         return delta.col * delta.row == 2
 
 bishop_directions = [Vector(x,y) for x in [1,-1] for y in [1,-1]]
@@ -86,8 +86,8 @@ class Bishop(Piece):
         White(): '\u2657'
     }
 
-    def can_move(self, from_position: Position, to_position: Position) -> bool:
-        delta = abs(to_position - from_position)
+    def can_move(self, to_position: Position) -> bool:
+        delta = abs(to_position - self.position)
         return delta.col == delta.row and delta.col != 0
 
 rook_directions = [Vector(sign*vertical,sign*(1 - vertical)) for vertical in [0,1] for sign in [-1,1]]
@@ -102,8 +102,8 @@ class Rook(Piece):
         White(): '\u2656'
     }
 
-    def can_move(self, from_position: Position, to_position: Position) -> bool:
-        delta = abs(to_position - from_position)
+    def can_move(self, to_position: Position) -> bool:
+        delta = abs(to_position - self.position)
         return delta.col * delta.row == 0 and delta.col + delta.row != 0
 
 class Queen(Piece):
@@ -115,8 +115,8 @@ class Queen(Piece):
         White(): '\u2655'
     }
 
-    def can_move(self, from_position: Position, to_position: Position) -> bool:
-        delta = abs(to_position - from_position)
+    def can_move(self, to_position: Position) -> bool:
+        delta = abs(to_position - self.position)
         return delta.col * delta.row * (delta.col - delta.row) == 0 and delta.col + delta.row != 0
 
 class King(Piece):
@@ -127,8 +127,8 @@ class King(Piece):
         White(): '\u2654'
     }
 
-    def can_move(self, from_position: Position, to_position: Position) -> bool:
-        delta = abs(to_position - from_position)
+    def can_move(self, to_position: Position) -> bool:
+        delta = abs(to_position - self.position)
         return max(delta.col, delta.row) == 1 and delta.col + delta.row != 0
 
 class Pawn(Piece):
@@ -143,12 +143,12 @@ class Pawn(Piece):
         self.move_vectors = [step*color.pawn_direction for step in [1,2]] + \
                                [Vector(delta_col, color.pawn_direction.row) for delta_col in [1,-1]]
 
-    def can_move(self, from_position: Position, to_position: Position) -> bool:
-        delta = to_position - from_position
+    def can_move(self, to_position: Position) -> bool:
+        delta = to_position - self.position
         return abs(delta.col) == 1 and delta.row == self.color.pawn_direction.row or \
                abs(delta.col) == 0 and (delta.row == self.color.pawn_direction.row or
-               not self.has_moved and delta.row == 2*self.color.pawn_row_delta)
+               not self.has_moved and delta.row == 2*self.color.pawn_direction.row)
 
-    def is_capture(self, from_position: Position, to_position: Position):
-        delta = to_position - from_position
+    def is_capture(self, to_position: Position):
+        delta = to_position - self.position
         return abs(delta.col) == 1 and delta.row == self.color.pawn_row_delta

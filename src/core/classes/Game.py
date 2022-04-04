@@ -1,16 +1,13 @@
-from core.classes.board_controller import BoardController
-from src.config.constants import BISHOP, BLACK, BLACK_NAMES, EMPTY_SQ_MSG, INVALID_COLOR_MSG, INVALID_PROMOTION, INVALID_SQ, KNIGHT, INVALID_MOVE_MSG, PICK_COLOR_ERROR_MSG, PICK_COLOR_MSG, PROMOTE, QUEEN, TOWER, WHITE, WHITE_NAMES
-from src.core.classes.action import Promote
-from src.core.classes.color import Black, Color, White
-from src.core.classes.input_manager import InputManager
-from src.core.classes.board import Board
-from src.core.classes.position import PositionError
+from src.core.classes.board_controller import BoardController
+from src.config.constants import INVALID_MOVE_MSG, WHITE
+from src.core.classes.actions import Promote
+from src.core.classes.color import Black, White
+from core.classes.input import Input
 from src.core.classes.rules import Rules
 from src.core.classes.ply import Ply
-import copy
 
 
-class Game(InputManager):
+class Game():
     """
     Class for a chess game. To play, use the `play` method.
     """
@@ -18,14 +15,14 @@ class Game(InputManager):
         self.controller = BoardController()
         self.is_finished = False
 
-    def add_ply(self, ply: Ply):
-        """
-        Adds a ply to the history of the game if it's valid, and executes its action.
-        """
-        if len(self.plies) > 0:
-            self.plies[-1].action.execute(self.previous_board)
-        self.plies.append(ply)
-        ply.action.execute(self.board)
+    # def add_ply(self, ply: Ply):
+    #     """
+    #     Adds a ply to the history of the game if it's valid, and executes its action.
+    #     """
+    #     if len(self.plies) > 0:
+    #         self.plies[-1].action.execute(self.previous_board)
+    #     self.plies.append(ply)
+    #     ply.action.execute(self.board)
 
     def validate_add_ply(self, ply: Ply):
         if self.is_finished or (len(self.plies) == 0 and ply.color != WHITE) \
@@ -45,30 +42,27 @@ class Game(InputManager):
         """
         Play a chess game controling both players.
         """
-        print(self.board)
+        print(self.controller.board)
         
         # Main loop
         while not self.is_finished:
             for color in [White(), Black()]:
                 # Input loop
                 while True:
-                    ply = self.ply_input(color)
-                    if not Rules().validate(ply, self.board, self.previous_board):
+                    ply = Input.ply(color)
+                    if not Rules().validate(ply, self.controller):
                         print(INVALID_MOVE_MSG)
-                    elif isinstance(ply.action, Promote):
-                        ply.set_promotion(self.promotion_input())
-                        break
                     else:
                         break
                 
-                # Add the ply to the history
-                self.add_ply(ply)
-                
+                # Execute ply action
+                self.controller.execute(ply.action)
+
                 # Print board
-                print(self.board)
+                print(self.controller.board)
 
                 # Checks
-                is_check = Rules().is_check(self.board, color.opposite_color())
+                is_check = Rules().is_check(self.controller.board, color.opposite_color())
                 if is_check:
                     print("Check!")
                 

@@ -1,5 +1,5 @@
 from string import ascii_lowercase
-from core.classes.board_controller import BoardController
+from src.core.classes.board_controller import BoardController
 from src.config.constants import BISHOP_NAMES, BLACK_NAMES, EMPTY_SQ_MSG, INVALID_COLOR_MSG, INVALID_PROMOTION, INVALID_SQ, KING_NAMES, KNIGHT_NAMES, PAWN_NAMES, QUEEN_NAMES, TOWER_NAMES, WHITE_NAMES
 from src.core.classes.color import Black, Color, White
 from src.core.classes.piece import Bishop, King, Knight, Pawn, Queen, Rook
@@ -7,18 +7,17 @@ from src.core.classes.ply import Ply
 from src.core.classes.position import Position, PositionError
 
 
-class InputManager:
-    def __init__(self) -> None:
-        pass
-
-    def color_input(self, text: str) -> Color:
+class Input:
+    @classmethod
+    def color(self, text: str) -> Color:
         if text.upper() in BLACK_NAMES:
             return Black()
         elif text.upper() in WHITE_NAMES:
             return White()
         raise ValueError()
 
-    def position_input(self, text_input: str) -> Position:
+    @classmethod
+    def position(self, text_input: str) -> Position:
         if len(text_input) == 2:
             col = text_input[0]
             row = text_input[1]
@@ -26,7 +25,8 @@ class InputManager:
                 return Position(ascii_lowercase.index(col), int(row) - 1)
         raise PositionError()
 
-    def ply_input(self, color: Color) -> Ply:
+    @classmethod
+    def ply(self, color: Color) -> Ply:
         """
         Returns a ply given by the player if the square selected is occupied by a piece
         of the given color.
@@ -60,7 +60,8 @@ class InputManager:
 
             return Ply(start,finish,piece)
 
-    def get_piece_class(name: str) -> type:
+    @classmethod
+    def piece_class(name: str) -> type:
         """
         This function standardizes the chess piece names.
         """
@@ -79,12 +80,13 @@ class InputManager:
         else:
             return None
 
-    def promotion_input(self) -> type:
+    @classmethod
+    def promotion(self) -> type:
         """
         Inputs a piece type valid for pawn promotion.
         """
         while True:
-            promotion_input = self.get_piece_class(input("Choose a piece to promote to: "))
+            promotion_input = self.piece_class(input("Choose a piece to promote to: "))
             if promotion_input in [Queen, Knight, Bishop, Rook]:
                 return promotion_input
             else:
