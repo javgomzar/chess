@@ -4,7 +4,8 @@ from src.core.error_classes.errors import PositionError
 from src.config.constants import LEFT, RIGHT, PAWN
 from src.core.classes.board import Board
 from src.core.classes.color import Black, Color
-from src.core.classes.piece import Bishop, King, Knight, Pawn, Piece, Queen, Rook
+from src.core.classes.piece import Piece
+from src.core.classes.pieces import Bishop, King, Knight, Pawn, Queen, Rook
 from src.core.classes.ply import Ply
 from src.core.classes.position import Position, Vector
 from src.core.metaclasses.Singleton import Singleton
@@ -22,28 +23,20 @@ class Rules(metaclass=Singleton):
             previous_board = controller.get_previous_board()
             previous_pawn = previous_board.get_piece(Position(ply.to_position.col, ply.color.opposite_color().pawn_row))
             taken_pawn = controller.board.get_piece(ply.to_position + (-ply.piece.color.pawn_direction))
-            if previous_pawn and taken_pawn and \
-               isinstance(previous_pawn, Pawn) and \
-               isinstance(taken_pawn, Pawn) and \
-               not previous_pawn.has_moved and \
-               ply.piece.is_capture(ply.to_position) and \
-               ply.piece.position.row == (3 if ply.color == Black() else 4):
+            if self.en_passant(previous_pawn, taken_pawn, ply):
                 ply.action = EnPassant(ply.piece, ply.to_position)
                 return
         elif isinstance(ply.piece, King):
-            left_rook = controller.board.get_piece(Position(0, ply.color.king_row))
-            if left_rook and \
-               isinstance(left_rook, Rook) and \
-               not left_rook.has_moved and \
-               ply.piece.is_left_castle(ply.to_position):
-                ply.action = LeftCastle(ply.color)
-                return
-            right_rook = controller.board.get_piece(Position(7, ply.color.king_row))
-            if right_rook and \
-               isinstance(right_rook, Rook) and \
-               not right_rook.has_moved and \
-               ply.piece.is_right_castle(ply.to_position):
-                ply.action = RightCastle(ply.color)
+            if ply.piece.is_left_castle(ply.to_position):
+                rook = controller.board.get_piece(Position(0, ply.color.king_row))
+                action_class = LeftCastle
+            elif ply.piece.is_right_castle(ply.to_position):
+                rook = controller.board.get_piece(Position(7, ply.color.king_row))
+                action_class = RightCastle
+            else:
+                rook = None
+            if rook and isinstance(rook, Rook) and not rook.has_moved:
+                ply.action = action_class(ply.color)
                 return
         ply.action = Move(ply.piece, ply.to_position)
         return
@@ -115,21 +108,16 @@ class Rules(metaclass=Singleton):
         else:
             return True
 
-    def en_passant(self, ply: Ply, current_board: Board, previous_board: Board) -> bool:
+    def en_passant(self, previous_pawn: Pawn, taken_pawn: Pawn, ply: Ply) -> bool:
         """
         Checks if a ply is an "en passant" move.
         """
-        from_position_row = ply.from_position.row
-        valid_from_position_row, valid_to_position_row, current_row, previous_row = (4,3,3,1) if ply.color == Black() else (5,6,4,6)
-        if from_position_row == valid_from_position_row and ply.to_position.row == valid_to_position_row:
-            current_pawn = current_board.state[current_row][ply.to_position.col-1]
-            previous_pawn = previous_board.state[previous_row][ply.to_position.col-1]
-            if current_pawn and previous_pawn \
-            and current_pawn.name  == PAWN \
-            and current_pawn.color != ply.color \
-            and current_pawn.id == previous_pawn.id:
-                return True
-        return False
+        return previous_pawn and taken_pawn and \
+               isinstance(previous_pawn, Pawn) and \
+               isinstance(taken_pawn, Pawn) and \
+               not previous_pawn.has_moved and \
+               ply.piece.is_capture(ply.to_position) and \
+               ply.piece.position.row == (3 if ply.color == Black() else 4)
 
     def is_pinned(self, ply: Ply, controller: BoardController) -> bool:
         """

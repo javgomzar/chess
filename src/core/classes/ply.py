@@ -29,19 +29,3 @@ class Ply():
         self.action = action
         self.is_check = is_check
         self.is_check_mate = is_check_mate
-
-    # def set_action(self, action_class : type):
-    #     self.action = action_class(self.from_position, self.to_position)
-    #     return self
-
-    # def set_check_mate(self):
-    #     self.is_check_mate = True
-    #     return self
-
-    # def set_check(self):
-    #     self.is_check = True
-    #     return self
-    
-    # def set_promotion(self, piece_class: type):
-    #     self.promotion = piece_class
-    #     return self
