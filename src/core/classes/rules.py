@@ -1,7 +1,8 @@
+from numpy import isin
 from src.core.classes.actions import EnPassant, LeftCastle, RightCastle, Move, Promote
 from src.core.classes.board_controller import BoardController
 from src.core.error_classes.errors import PositionError
-from src.config.constants import LEFT, RIGHT, PAWN
+from src.config.constants import LEFT, RIGHT
 from src.core.classes.board import Board
 from src.core.classes.color import Black, Color
 from src.core.classes.piece import Piece
@@ -78,33 +79,13 @@ class Rules(metaclass=Singleton):
             else:
                 return False           
 
-        # Kings are also special
-        elif isinstance(ply.piece, King):
-            if ply.piece.can_move(ply.from_position,ply.to_position):
-                ply.set_action(Move)
-                return True
-            
-            # Castling
-            elif not current_board.king_moved[ply.color]:
-                delta = ply.to_position - ply.from_position
-                side,direction = (RIGHT, Vector(1,0)) if delta.col > 0 else (LEFT, Vector(-1,0))
-                if delta.row == 0 and abs(delta.col) == 2 and not current_board.rook_moved[ply.color][side]:
-                    pointer = ply.from_position
-                    possible_board = current_board.copy()
-
-                    # Can't castle if there is a check in the way
-                    for n in range(0,3):
-                        if self.is_check(possible_board, ply.color):
-                            break
-                        pointer += direction
-                        possible_board = current_board.copy().move_piece(ply.from_position, pointer)
-                    else:
-                        return True
-                    return False
-                else:
-                    return False
-            else:
-                return False
+        # Can't castle if there is a check in the way
+        if isinstance(ply.action, LeftCastle) or isinstance(ply.action, RightCastle):
+            for n in range(0,3):
+                if self.is_check(possible_board, ply.color):
+                    break
+                pointer += direction
+                possible_board = current_board.copy().move_piece(ply.from_position, pointer)
         else:
             return True
 

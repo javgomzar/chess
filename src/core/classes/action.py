@@ -11,4 +11,3 @@ class Action(Protocol):
 
     def redo(self, board : Board) -> None:
         pass
-

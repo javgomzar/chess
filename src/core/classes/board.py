@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 from typing import Optional
-from collections.abc import MutableMapping
-from src.config.constants import BLACK, BOARD_IMG, WHITE, LEFT, RIGHT, EMPTY_BOARD_STRING, EMPTY_SQ_MSG
+from src.config.constants import BOARD_IMG, EMPTY_BOARD_STRING
 from src.core.classes.color import Black, Color, White
-from src.core.classes.piece import Bishop, King, Knight, Pawn, Piece, Queen, Rook
+from src.core.classes.piece import Piece
+from src.core.classes.pieces import Bishop, King, Knight, Pawn, Queen, Rook
 from PIL import Image
 from src.core.classes.position import Position
 

@@ -1,8 +1,9 @@
 from dataclasses import dataclass
+from src.core.classes.pieces import Pawn
 from src.core.classes.color import Color
 from src.core.classes.input import Input
 from src.core.classes.action import Action
-from src.core.classes.piece import Pawn, Piece
+from src.core.classes.piece import Piece
 from src.core.classes.position import Position
 from src.core.classes.board import Board
 

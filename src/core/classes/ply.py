@@ -1,6 +1,3 @@
-from dataclasses import dataclass, field
-from typing import Optional
-from src.core.classes.board import Board
 from src.core.classes.action import Action
 from src.core.classes.color import Color
 from src.core.classes.piece import Piece

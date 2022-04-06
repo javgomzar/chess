@@ -1,9 +1,8 @@
 from string import ascii_lowercase
 from src.core.classes.board import Board
-from src.core.classes.board_controller import BoardController
 from src.config.constants import BISHOP_NAMES, BLACK_NAMES, EMPTY_SQ_MSG, INVALID_COLOR_MSG, INVALID_PROMOTION, INVALID_SQ, KING_NAMES, KNIGHT_NAMES, PAWN_NAMES, QUEEN_NAMES, TOWER_NAMES, WHITE_NAMES
 from src.core.classes.color import Black, Color, White
-from src.core.classes.piece import Bishop, King, Knight, Pawn, Queen, Rook
+from src.core.classes.pieces import Bishop, King, Knight, Pawn, Queen, Rook
 from src.core.classes.ply import Ply
 from src.core.classes.position import Position, PositionError
 
@@ -92,4 +91,3 @@ class Input:
                 return promotion_input
             else:
                 print(INVALID_PROMOTION)
-
