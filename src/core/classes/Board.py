@@ -16,10 +16,13 @@ class Board():
     pieces : list[Piece]
 
     def __init__(self, empty : bool = False):
-        self.pieces = [piece_class(color,Position(col,row),is_active=True,has_moved=False)
-                        for color in [Black(), White()] 
-                        for col,class_pair in enumerate(zip([Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook],[Pawn]*8))
-                        for row,piece_class in zip((color.king_row_index, color.pawn_row_index),class_pair)]
+        if not empty:
+            self.pieces = [piece_class(color,Position(col,row),is_active=True,has_moved=False)
+                            for color in [Black(), White()] 
+                            for col,class_pair in enumerate(zip([Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook],[Pawn]*8))
+                            for row,piece_class in zip((color.king_row, color.pawn_row),class_pair)]
+        else:
+            self.pieces = []
 
     def __str__(self) -> str:
         result = EMPTY_BOARD_STRING
@@ -74,11 +77,17 @@ class Board():
             pieces = [piece for piece in pieces if piece.is_active == is_active]
         return pieces
 
-    def get_king_position(self, color: Color) -> Position:
-        return [piece for piece in self.pieces if piece.color == color and isinstance(piece, King)][0].position
+    def get_king(self, color: Color) -> King:
+        pieces = [piece for piece in self.pieces if isinstance(piece, King) and piece.color == color]
+        if len(pieces) == 0:
+            return None
+        elif len(pieces) > 1:
+            raise Exception()
+        else:
+            return pieces[0]
 
     def copy(self):
-        board = Board([])
+        board = Board(empty=True)
         for piece in self.pieces:
             board.pieces.append(piece.copy())
         return board

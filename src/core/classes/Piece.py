@@ -131,6 +131,12 @@ class King(Piece):
         delta = abs(to_position - self.position)
         return max(delta.col, delta.row) == 1 and delta.col + delta.row != 0
 
+    def is_left_castle(self, to_position: Position) -> bool:
+        return not self.has_moved and (to_position - self.position) == Vector(-2,0)
+
+    def is_right_castle(self, to_position: Position) -> bool:
+        return not self.has_moved and (to_position - self.position) == Vector(2,0)
+
 class Pawn(Piece):
     image_file = "Pawn.png"
     unicode = {
@@ -151,4 +157,4 @@ class Pawn(Piece):
 
     def is_capture(self, to_position: Position):
         delta = to_position - self.position
-        return abs(delta.col) == 1 and delta.row == self.color.pawn_row_delta
+        return abs(delta.col) == 1 and delta.row == self.color.pawn_direction.row

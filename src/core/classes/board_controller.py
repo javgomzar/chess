@@ -27,13 +27,20 @@ class BoardController():
         action.redo(self.board)
         self.undo_stack.append(action)
 
-    def clear(self) -> None:
+    def undo_all(self) -> None:
         for n in range(0,len(self.undo_stack)):
             self.undo()
 
-    def restore(self) -> None:
+    def redo_all(self) -> None:
         for n in range(0,len(self.redo_stack)):
             self.redo()
+
+    def clear(self) -> None:
+        self.redo_stack = []
+
+    def roll_back(self) -> None:
+        self.undo()
+        self.clear()
 
     def get_previous_board(self) -> Board:
         self.undo()

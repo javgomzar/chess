@@ -2,7 +2,7 @@ from src.core.classes.board_controller import BoardController
 from src.config.constants import INVALID_MOVE_MSG, WHITE
 from src.core.classes.actions import Promote
 from src.core.classes.color import Black, White
-from core.classes.input import Input
+from src.core.classes.input import Input
 from src.core.classes.rules import Rules
 from src.core.classes.ply import Ply
 
@@ -49,7 +49,7 @@ class Game():
             for color in [White(), Black()]:
                 # Input loop
                 while True:
-                    ply = Input.ply(color)
+                    ply = Input.ply(color, self.controller.board)
                     if not Rules().validate(ply, self.controller):
                         print(INVALID_MOVE_MSG)
                     else:
@@ -62,12 +62,12 @@ class Game():
                 print(self.controller.board)
 
                 # Checks
-                is_check = Rules().is_check(self.controller.board, color.opposite_color())
+                is_check = Rules().is_check(color.opposite_color(), self.controller.board)
                 if is_check:
                     print("Check!")
                 
                 # Finishing condition
-                if Rules().is_finished(self.board, self.previous_board, color.opposite_color()):
+                if Rules().is_finished(color.opposite_color(), self.controller):
                     self.is_finished = True
                     if is_check:
                         print(f"{color} won!")

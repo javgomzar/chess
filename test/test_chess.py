@@ -25,7 +25,7 @@ class TestChess(ut.TestCase):
                         # Pawn tests
                         pawn = Pawn(color, position, is_active, has_moved)
                         self.assertTrue(pawn == pawn.copy(), "Pawn copying is failing")
-                        if position.row == color.pawn_row_index and not has_moved:
+                        if position.row == color.pawn_row and not has_moved:
                             self.assertTrue(pawn.can_move(position + 2*color.pawn_direction), "Pawn first move check is failing")
                         try:
                             to_position = position + color.pawn_direction
@@ -49,9 +49,9 @@ class TestChess(ut.TestCase):
         board = Board()
         for color in [Black(), White()]:
             for col,piece_class in enumerate([Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]):
-                pawn = board.get_piece(Position(col,color.pawn_row_index))
+                pawn = board.get_piece(Position(col,color.pawn_row))
                 self.assertTrue(isinstance(pawn, Pawn),"Pawn check is failing.")
-                piece = board.get_piece(Position(col,color.king_row_index))
+                piece = board.get_piece(Position(col,color.king_row))
                 self.assertTrue(isinstance(piece, piece_class),"Not pawns check is failing.")
                 self.assertTrue(pawn in board and piece in board, "__contains__ is failing")
                 try:
@@ -63,15 +63,31 @@ class TestChess(ut.TestCase):
                 board.pieces.append(pawn)
                 board.pieces.append(piece)
 
-        self.assertEqual(board.get_king_position(Black()), Position(4,7), "get_king_position is failing for black")
-        self.assertEqual(board.get_king_position(White()), Position(4,0), "get_king_position is failing for white")
-
-        self.assertTrue(board == board.copy(), "board copy or __eq__ is failing")
-
-
+        self.assertEqual(board.get_king(Black()).position, Position(4,7), "get_king_position is failing for black")
+        self.assertEqual(board.get_king(White()).position, Position(4,0), "get_king_position is failing for white")
+        copied_board = board.copy()
+        self.assertTrue(board == copied_board, "board copy or __eq__ is failing")
 
     def test_controller(self):
-        pass
+        controller = BoardController()
+
+        white_pawn = controller.board.get_piece(Position(4,1))
+        black_pawn = controller.board.get_piece(Position(3,6))
+        black_knight = controller.board.get_piece(Position(6,7))
+        black_queen = controller.board.get_piece(Position(3,7))
+
+        controller.execute(Move(white_pawn, Position(4,3))),
+        controller.execute(Move(black_knight, Position(5,5))),
+        controller.execute(Move(white_pawn, Position(4,4))),
+        controller.execute(Move(black_pawn, Position(3,4))),
+        controller.execute(EnPassant(white_pawn, Position(3,5))),
+        controller.execute(Move(black_queen, Position(3,5)))
+
+        print(controller.board)
+        for action in reversed(controller.undo_stack):
+            print(action)
+            controller.undo()
+            print(controller.board)
 
     def test_checks(self):
         pass

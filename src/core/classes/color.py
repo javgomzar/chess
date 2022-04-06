@@ -10,8 +10,8 @@ class Color(metaclass=Singleton):
 
 class Black(Color):
     image_folder_path = MEDIA_PATH + "Black/"
-    pawn_row_index = 6
-    king_row_index = 7
+    pawn_row = 6
+    king_row = 7
     pawn_direction = Vector(0,-1)
 
     def __str__(self):
@@ -22,8 +22,8 @@ class Black(Color):
 
 class White(Color):
     image_folder_path = MEDIA_PATH + "White/"
-    pawn_row_index = 1
-    king_row_index = 0
+    pawn_row = 1
+    king_row = 0
     pawn_direction = Vector(0,1)
 
     def __str__(self):

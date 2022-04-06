@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Optional
+from src.core.classes.board import Board
 from src.core.classes.action import Action
 from src.core.classes.color import Color
 from src.core.classes.piece import Piece
@@ -20,7 +21,7 @@ class Ply():
     gives_check : bool
     gives_check_mate : bool
 
-    def __init__(self, from_position : Position, to_position: Position, piece: Piece, action: Action = None, is_check: bool = False, is_check_mate: bool = False) -> None:
+    def __init__(self, from_position : Position, to_position: Position, piece: Piece = None, action: Action = None, is_check: bool = False, is_check_mate: bool = False) -> None:
         self.from_position = from_position
         self.to_position = to_position
         self.piece = piece
@@ -29,18 +30,18 @@ class Ply():
         self.is_check = is_check
         self.is_check_mate = is_check_mate
 
-    def set_action(self, action_class : type):
-        self.action = action_class(self.from_position, self.to_position)
-        return self
+    # def set_action(self, action_class : type):
+    #     self.action = action_class(self.from_position, self.to_position)
+    #     return self
 
-    def set_check_mate(self):
-        self.is_check_mate = True
-        return self
+    # def set_check_mate(self):
+    #     self.is_check_mate = True
+    #     return self
 
-    def set_check(self):
-        self.is_check = True
-        return self
+    # def set_check(self):
+    #     self.is_check = True
+    #     return self
     
-    def set_promotion(self, piece_class: type):
-        self.promotion = piece_class
-        return self
+    # def set_promotion(self, piece_class: type):
+    #     self.promotion = piece_class
+    #     return self
