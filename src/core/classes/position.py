@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from string import ascii_lowercase
 from src.core.error_classes.errors import PositionError, VectorError
+from src.utils import sign
 
 @dataclass
 class Vector:
@@ -14,8 +15,8 @@ class Vector:
         else:
             raise VectorError()
 
-    def __hash__(self):
-        return (self.col, self.row).__hash__()
+    # def __hash__(self):
+    #     return (self.col, self.row).__hash__()
 
     def __str__(self):
         return f"({self.col}, {self.row})"
@@ -27,7 +28,13 @@ class Vector:
         return Vector(-self.col, -self.row)
 
     def __eq__(self, other):
-        return self.col == other.col and self.row == other.row
+        try:
+            other.col
+            other.row
+        except Exception:
+            return False
+        else:
+            return self.col == other.col and self.row == other.row
 
     def __add__(self, other):
         return Vector(self.col + other.col, self.row + other.row)
@@ -44,14 +51,24 @@ class Vector:
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__} object : ({self.col}, {self.row})>"
 
+    def normalize(self):
+        return Vector(sign(self.col), sign(self.row))
+
 
 class Position(Vector):
-    def __init__(self, col: int, row: int) -> None:
+    def __init__(self, *args) -> None:
+        col,row = args
+        try:
+            col = ascii_lowercase[0:8].index(str(col))
+            if isinstance(row, str):
+                row = int(row) - 1
+        except:
+            raise PositionError(f"Can't initialize position with arguments {col}, {row}")
         if 0 <= min(row,col) and max(row,col) <= 7:
             self.col = col
             self.row = row
         else:
-            raise PositionError()
+            raise PositionError(f"Row and col must be between 0 and 7")
 
     def __str__(self):
         return ascii_lowercase[0:8][self.col] + str(self.row + 1)

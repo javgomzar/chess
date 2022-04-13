@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from src.core.classes.board import Board
-from src.core.classes.action import Action
+from core.classes.actions.action import Action
 
 @dataclass
 class BoardController():
@@ -10,7 +10,7 @@ class BoardController():
 
     def execute(self, action : Action) -> None:
         action.execute(self.board)
-        self.redo_stack.clear()
+        self.clear()
         self.undo_stack.append(action)
 
     def undo(self) -> None:
@@ -36,11 +36,17 @@ class BoardController():
             self.redo()
 
     def clear(self) -> None:
-        self.redo_stack = []
+        self.redo_stack.clear()
 
     def roll_back(self) -> None:
         self.undo()
         self.clear()
+
+    def try_action(self, action: Action) -> Board:
+        self.execute(action)
+        result = self.board.copy()
+        self.roll_back()
+        return result
 
     def get_previous_board(self) -> Board:
         self.undo()

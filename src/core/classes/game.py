@@ -1,6 +1,6 @@
 from src.core.classes.board_controller import BoardController
 from src.config.constants import INVALID_MOVE_MSG, WHITE
-from src.core.classes.actions import Promote
+from src.core.classes.actions import Batch, Promote
 from src.core.classes.color import Black, White
 from src.core.classes.input import Input
 from src.core.classes.rules import Rules
@@ -11,8 +11,8 @@ class Game():
     """
     Class for a chess game. To play, use the `play` method.
     """
-    def __init__(self) -> None:
-        self.controller = BoardController()
+    def __init__(self, mode: GameMode) -> None:
+        self.controller = BoardController(mode.init_board())
         self.is_finished = False
 
     # def add_ply(self, ply: Ply):
@@ -24,19 +24,23 @@ class Game():
     #     self.plies.append(ply)
     #     ply.action.execute(self.board)
 
-    def validate_add_ply(self, ply: Ply):
-        if self.is_finished or (len(self.plies) == 0 and ply.color != WHITE) \
-                            or (len(self.plies) > 0 and ply.color == self.plies[-1].color):
-            return False
-        elif Rules().validate(ply, self.board, self.previous_board):
-            if isinstance(ply.action, Promote) and not ply.promotion:
-                return False
-            self.add_ply(ply)
-            if Rules().is_finished(self.board, self.previous_board, ply.color.opposite_color()):
-                self.is_finished = True
-            return True
-        else:
-            return False
+    # def validate_add_ply(self, ply: Ply):
+    #     if self.is_finished or (len(self.plies) == 0 and ply.color != WHITE) \
+    #                         or (len(self.plies) > 0 and ply.color == self.plies[-1].color):
+    #         return False
+    #     elif Rules().validate(ply, self.board, self.previous_board):
+    #         if isinstance(ply.action, Promote) and not ply.promotion:
+    #             return False
+    #         self.add_ply(ply)
+    #         if Rules().is_finished(self.board, self.previous_board, ply.color.opposite_color()):
+    #             self.is_finished = True
+    #         return True
+    #     else:
+    #         return False
+
+    def test(self, batch: Batch):
+        for command in batch:
+
 
     def play(self):
         """
@@ -55,6 +59,10 @@ class Game():
                     else:
                         break
                 
+                # If pawn is promoting, choose piece to promote to
+                if isinstance(ply.action, Promote):
+                    ply.action.choose()
+                    
                 # Execute ply action
                 self.controller.execute(ply.action)
 

@@ -1,15 +1,14 @@
-from numpy import isin
-from src.core.classes.actions import EnPassant, LeftCastle, RightCastle, Move, Promote
+from core.classes.actions.action import Action
+from src.core.classes.actions.actions import Castle, EnPassant, Move, Promote
 from src.core.classes.board_controller import BoardController
 from src.core.error_classes.errors import PositionError
-from src.config.constants import LEFT, RIGHT
 from src.core.classes.board import Board
 from src.core.classes.color import Black, Color
-from src.core.classes.piece import Piece
+from core.classes.pieces.piece import Piece
 from src.core.classes.pieces import Bishop, King, Knight, Pawn, Queen, Rook
 from src.core.classes.ply import Ply
 from src.core.classes.position import Position, Vector
-from src.core.metaclasses.Singleton import Singleton
+from src.core.abstract_classes.singleton import Singleton
 
 
 class Rules(metaclass=Singleton):
@@ -19,116 +18,105 @@ class Rules(metaclass=Singleton):
     def set_action(self, ply: Ply, controller: BoardController) -> None:
         if isinstance(ply.piece, Pawn):
             if ply.to_position.row == ply.piece.color.opposite_color().king_row:
-                ply.action = Promote(ply.piece)
+                ply.action = Promote(ply.piece, ply.vector)
                 return
-            previous_board = controller.get_previous_board()
-            previous_pawn = previous_board.get_piece(Position(ply.to_position.col, ply.color.opposite_color().pawn_row))
-            taken_pawn = controller.board.get_piece(ply.to_position + (-ply.piece.color.pawn_direction))
-            if self.en_passant(previous_pawn, taken_pawn, ply):
+            if self.en_passant(ply, controller):
                 ply.action = EnPassant(ply.piece, ply.to_position)
                 return
         elif isinstance(ply.piece, King):
-            if ply.piece.is_left_castle(ply.to_position):
-                rook = controller.board.get_piece(Position(0, ply.color.king_row))
-                action_class = LeftCastle
-            elif ply.piece.is_right_castle(ply.to_position):
-                rook = controller.board.get_piece(Position(7, ply.color.king_row))
-                action_class = RightCastle
-            else:
-                rook = None
-            if rook and isinstance(rook, Rook) and not rook.has_moved:
-                ply.action = action_class(ply.color)
-                return
-        ply.action = Move(ply.piece, ply.to_position)
+            if ply.piece.is_castle(ply.to_position):
+                is_left_castle = ply.piece.is_left_castle(ply.vector)
+                rook_col,direction = (0, Vector(-1,0)) if is_left_castle else (7, Vector(1,0))
+                rook = controller.board.get_piece(Position(rook_col, ply.color.king_row))
+                if rook and isinstance(rook, Rook) and not rook.has_moved:
+                    ply.action = Castle(ply.color, direction)
+                    return
+        ply.action = Move(ply.piece, ply.vector)
         return
 
-    def validate(self, ply: Ply, controller: BoardController) -> bool:
+    def validate(self, ply: Ply, controller: BoardController) -> Action:
         """
         Validates a ply for the current board and a previous board. Returns `True` if the ply is valid
         and `False` if it's not valid. If the ply is valid, this method fills the action attribute for
         the ply.
         """
-        if not ply.piece.can_move(ply.to_position):
+        if not ply.piece.can_move(ply.vector):
             return False
         
         self.set_action(ply, controller)
         current_board = controller.board.copy()
         piece_taken = current_board.get_piece(ply.to_position)
 
-        # Can't take your own piece or move if the piece is pinned
-        if self.is_pinned(ply, controller) or piece_taken and piece_taken.color == ply.color:
+        # Exclude taking your own piece, pins and blocks
+        if piece_taken and piece_taken.color == ply.color or \
+           not isinstance(ply.piece, Knight) and self.is_blocked(ply, current_board) or \
+           self.is_pinned(ply, controller):
             return False
 
-        # Blocks
-        elif not isinstance(ply.piece, Knight) and self.is_blocked(ply, current_board):
-            return False
-
-        # Pawns are special
+        # Pawns can only move diagonally under certain conditions
         elif isinstance(ply.piece, Pawn):
-            piece_taken = current_board.get_piece(ply.to_position)
-
-            #Pawn diagonal moves
             if piece_taken:
                 if (isinstance(ply.action, Move) or isinstance(ply.action, Promote)) and \
-                    ply.piece.is_capture(ply.to_position):
+                    ply.piece.is_capture(ply.to_position - ply.from_position):
                     return True
                 else:
                     return False
-            elif isinstance(ply.action, EnPassant) or not ply.piece.is_capture(ply.to_position):
+            elif isinstance(ply.action, EnPassant) or not ply.piece.is_capture(ply.to_position - ply.from_position):
                 return True
             else:
                 return False           
 
         # Can't castle if there is a check in the way
-        if isinstance(ply.action, LeftCastle) or isinstance(ply.action, RightCastle):
-            for n in range(0,3):
-                if self.is_check(possible_board, ply.color):
-                    break
+        if isinstance(ply.action, Castle):
+            pointer = ply.color.king_position
+            direction = ply.action.direction
+            for n in range(0,2):
                 pointer += direction
-                possible_board = current_board.copy().move_piece(ply.from_position, pointer)
-        else:
-            return True
+                possible_board = controller.try_action(Move(ply.piece, direction))
+                if self.is_check(ply.color, possible_board):
+                    return False
+        return True
 
-    def en_passant(self, previous_pawn: Pawn, taken_pawn: Pawn, ply: Ply) -> bool:
+    def en_passant(self, ply: Ply, controller: BoardController) -> bool:
         """
         Checks if a ply is an "en passant" move.
         """
-        return previous_pawn and taken_pawn and \
-               isinstance(previous_pawn, Pawn) and \
-               isinstance(taken_pawn, Pawn) and \
-               not previous_pawn.has_moved and \
-               ply.piece.is_capture(ply.to_position) and \
-               ply.piece.position.row == (3 if ply.color == Black() else 4)
+        taken_piece = controller.board.get_piece(ply.to_position)
+        if ply.piece.is_capture(ply.vector) and not taken_piece:
+            passed_pawn_position = ply.to_position + (-ply.piece.color.pawn_direction)
+            passed_pawn = controller.board.get_piece(passed_pawn_position)
+            previous_board = controller.get_previous_board()
+            previous_pawn_position = Position(ply.to_position.col, ply.color.opposite_color().pawn_row)
+            previous_pawn = previous_board.get_piece(previous_pawn_position)
+            return previous_pawn and passed_pawn and \
+                   previous_pawn.id == passed_pawn.id and \
+                   ply.from_position.row == (3 if ply.color == Black() else 4)
 
     def is_pinned(self, ply: Ply, controller: BoardController) -> bool:
         """
         Checks if a piece is pinned. This means that moving it 
         would leave the king in check.
         """
-        controller.execute(ply.action)
-        result = self.is_check(ply.color, controller.board)
-        controller.roll_back()
-        return result
+        possible_board = controller.try_action(ply.action)
+        return self.is_check(ply.color, possible_board)
 
     def is_blocked(self, ply: Ply, board: Board) -> bool:
         """
         Checks if a ply is a movement blocked by other piece.
         """
-        delta = ply.to_position - ply.from_position
-        norm = max(abs(delta.col), abs(delta.row))
-        direction = Vector(int(delta.col / norm), int(delta.row / norm))
+        direction = ply.vector.normalize()
         pointer = ply.from_position + direction
         while pointer != ply.to_position:
             if board.get_piece(pointer):
                 return True
-            pointer = pointer + direction
+            pointer += direction
         return False
 
     def is_check(self, color: Color, board: Board) -> bool:
         """
         Checks if a board contains a check for the king of a given color.
         """
-        king_position = board.get_king(color).position
+        king_position = board.get_king_position(color)
 
         # Knight checks... and king checks?
         for piece_class in [Knight, King]:
@@ -145,18 +133,21 @@ class Rules(metaclass=Singleton):
         # Bishop and rook checks (and Queen)
         for piece_class in [Bishop, Rook]:
             for direction in piece_class.move_directions:
-                try:
-                    pointer = king_position + direction
-                except PositionError:
-                    break
-                piece = board.get_piece(pointer)
-                if piece:
-                    if piece.color == color:
+                pointer = king_position
+                while True:
+                    try:
+                        pointer += direction
+                    except PositionError:
                         break
-                    elif isinstance(piece,piece_class) or isinstance(piece,Queen):
-                        return True
                     else:
-                        break
+                        piece = board.get_piece(pointer)
+                        if piece:
+                            if piece.color == color:
+                                break
+                            elif isinstance(piece,piece_class) or isinstance(piece,Queen):
+                                return True
+                            else:
+                                break
 
         # Pawn checks
         for direction in [color.pawn_direction + Vector(delta_col, 0) for delta_col in [-1,1]]:
@@ -175,8 +166,9 @@ class Rules(metaclass=Singleton):
         Returns all valid moves for the piece in a given position.
         """        
         result = []
-        for possible_move in piece.available_positions():
-            if self.validate(Ply(piece.position, possible_move, piece),controller):
+        from_position = controller.board.get_position(piece)
+        for possible_move in piece.available_positions(from_position):
+            if self.validate(Ply(from_position, possible_move, piece), controller):
                 result.append(possible_move)
         return result
 
