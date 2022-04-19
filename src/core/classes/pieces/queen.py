@@ -14,6 +14,9 @@ class Queen(Piece):
         White(): '\u2655'
     }
 
+    def __int__(self):
+        return 5
+
     def can_move(self, vector: Vector) -> bool:
         vector = abs(vector)
         return vector.col * vector.row * (vector.col - vector.row) == 0 and vector.col + vector.row != 0

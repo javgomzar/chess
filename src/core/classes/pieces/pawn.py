@@ -15,6 +15,9 @@ class Pawn(Piece):
         self.move_vectors = [step*color.pawn_direction for step in [1,2]] + \
                             [Vector(delta_col, color.pawn_direction.row) for delta_col in [1,-1]]
 
+    def __int__(self):
+        return int(self.color)
+
     def can_move(self, vector: Vector) -> bool:
         return abs(vector.col) == 1 and vector.row == self.color.pawn_direction.row or \
                abs(vector.col) == 0 and (vector.row == self.color.pawn_direction.row or

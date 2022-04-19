@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from src.core.classes.board import Board
 from src.core.classes.position import Vector
-from core.classes.pieces.piece import Piece
+from src.core.classes.pieces.piece import Piece
 
 
 @dataclass

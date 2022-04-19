@@ -1,7 +1,7 @@
 from src.config.constants import BOARD_IMG, EMPTY_BOARD_STRING
-from src.core.classes.color import Black, Color, White
-from core.classes.pieces.piece import Piece
-from src.core.classes.pieces import Bishop, King, Knight, Pawn, Queen, Rook
+from src.core.classes.color import Color
+from src.core.classes.pieces.piece import Piece
+from src.core.classes.pieces import King
 from PIL import Image
 from src.core.classes.position import Position
 from src.utils import extract
@@ -39,6 +39,14 @@ class Board():
 
     def __iter__(self):
         return iter(self.positions.keys())
+
+    def __hash__(self):
+        result = 1
+        for piece in self:
+            position = self.positions[piece]
+            if position:
+                result *= position.__hash__() ** int(piece)
+        return result
 
     def _set_id(self, piece: Piece) -> None:
         piece.id = self._last_id
@@ -114,7 +122,7 @@ class Board():
         return pieces
 
     def copy(self):
-        board = Board(empty=True)
+        board = Board()
         for piece in self:
             board.add(piece.copy(), self.get_position(piece))
         return board

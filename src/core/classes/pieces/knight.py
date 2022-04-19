@@ -11,6 +11,9 @@ class Knight(Piece):
         White(): '\u2658'
     }
 
+    def __init__(self):
+        return 3*int(self.color)
+
     def can_move(self, vector: Vector) -> bool:
         vector = abs(vector)
         return vector.col * vector.row == 2

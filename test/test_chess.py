@@ -1,7 +1,11 @@
+import sys
+
+from core.classes.game_modes.standard import Standard
+sys.path.append(sys.path[0] + '\\..')
+
 import unittest as ut
 from os.path import isdir
-import sys
-sys.path.append(sys.path[0] + '\\..')
+from string import ascii_lowercase
 
 from src.core.classes.position import *
 from src.core.classes.color import *
@@ -22,12 +26,17 @@ class TestChess(ut.TestCase):
             if 0 > min(col,row) or max(col,row) > 7:
                 self.assertRaises(PositionError, lambda: Position(col,row))
 
+        for col in ascii_lowercase[0:8]:
+            for row in range(1,9):
+                position = Position(col + str(row))
+                str(position) == col + str(row)
+
     def test_color(self):
         white = White()
         black = Black()
 
         self.assertTrue(white != black and white == White() and black == Black(), "Color __eq__ is failing.")
-        self.assertTrue(isdir(white.image_folder_path) and isdir(black.image_folder_path), "Image folder paths not found.")
+        # self.assertTrue(isdir(white.image_folder_path) and isdir(black.image_folder_path), "Image folder paths not found.")
         self.assertTrue(white.pawn_row == 1 and black.pawn_row == 6)
         self.assertTrue(white.king_row == 0 and black.king_row == 7)
         self.assertTrue(white.pawn_direction == Vector(0,1) and black.pawn_direction == Vector(0,-1))
@@ -122,6 +131,13 @@ class TestChess(ut.TestCase):
 
     def test_game(self):
         pass
+
+    def test_castle(self):
+        board = Standard().init_board()
+        controller = BoardController(board)
+        batch = Batch([
+            Move()
+        ])
 
 
 

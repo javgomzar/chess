@@ -13,6 +13,9 @@ class Rook(Piece):
         White(): '\u2656'
     }
 
+    def __int__(self):
+        return 4
+
     def can_move(self, vector: Vector) -> bool:
         vector = abs(vector)
         return vector.col * vector.row == 0 and vector.col + vector.row != 0

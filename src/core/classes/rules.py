@@ -1,10 +1,10 @@
-from core.classes.actions.action import Action
-from src.core.classes.actions.actions import Castle, EnPassant, Move, Promote
+from src.core.classes.actions.action import Action
+from src.core.classes.actions import Castle, EnPassant, Move, Promote
 from src.core.classes.board_controller import BoardController
 from src.core.error_classes.errors import PositionError
 from src.core.classes.board import Board
 from src.core.classes.color import Black, Color
-from core.classes.pieces.piece import Piece
+from src.core.classes.pieces.piece import Piece
 from src.core.classes.pieces import Bishop, King, Knight, Pawn, Queen, Rook
 from src.core.classes.ply import Ply
 from src.core.classes.position import Position, Vector
@@ -76,21 +76,6 @@ class Rules(metaclass=Singleton):
                 if self.is_check(ply.color, possible_board):
                     return False
         return True
-
-    def en_passant(self, ply: Ply, controller: BoardController) -> bool:
-        """
-        Checks if a ply is an "en passant" move.
-        """
-        taken_piece = controller.board.get_piece(ply.to_position)
-        if ply.piece.is_capture(ply.vector) and not taken_piece:
-            passed_pawn_position = ply.to_position + (-ply.piece.color.pawn_direction)
-            passed_pawn = controller.board.get_piece(passed_pawn_position)
-            previous_board = controller.get_previous_board()
-            previous_pawn_position = Position(ply.to_position.col, ply.color.opposite_color().pawn_row)
-            previous_pawn = previous_board.get_piece(previous_pawn_position)
-            return previous_pawn and passed_pawn and \
-                   previous_pawn.id == passed_pawn.id and \
-                   ply.from_position.row == (3 if ply.color == Black() else 4)
 
     def is_pinned(self, ply: Ply, controller: BoardController) -> bool:
         """

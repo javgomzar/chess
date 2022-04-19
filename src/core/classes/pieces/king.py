@@ -12,6 +12,9 @@ class King(Piece):
         White(): '\u2654'
     }
 
+    def __int__(self):
+        return 6*int(self.color)
+
     def can_move(self, vector: Vector) -> bool:
         vector = abs(vector)
         return max(vector.col, vector.row) == 1 and vector.col + vector.row != 0 or \

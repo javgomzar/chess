@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from src.core.classes.board import Board
-from src.core.classes.actions.action import Action
+from src.core.classes.actions import Action
 
 
 @dataclass
 class Batch:
     commands : list[Action]
 
-    def __len__(self):
-        return len(self.commands)
+    # def __len__(self):
+    #     return len(self.commands)
 
     def __iter__(self):
         return iter(self.commands)

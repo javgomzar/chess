@@ -1,46 +1,69 @@
+from src.core.classes.actions.action import Action
+from src.core.classes.ply import Ply
+from src.core.classes.players.player import Player
+from src.core.classes.game_modes.game_mode import GameMode
 from src.core.classes.board_controller import BoardController
-from src.config.constants import INVALID_MOVE_MSG, WHITE
-from src.core.classes.actions import Batch, Promote
-from src.core.classes.color import Black, White
+from src.config.constants import INVALID_MOVE_MSG
+from src.core.classes.actions import Promote
+from src.core.classes.color import Black, Color, White
 from src.core.classes.input import Input
 from src.core.classes.rules import Rules
-from src.core.classes.ply import Ply
 
 
 class Game():
     """
     Class for a chess game. To play, use the `play` method.
     """
-    def __init__(self, mode: GameMode) -> None:
-        self.controller = BoardController(mode.init_board())
-        self.is_finished = False
+    controller: BoardController
+    game_mode: GameMode
+    is_finished: bool
+    players: dict[Color, Player]
 
-    # def add_ply(self, ply: Ply):
-    #     """
-    #     Adds a ply to the history of the game if it's valid, and executes its action.
-    #     """
-    #     if len(self.plies) > 0:
-    #         self.plies[-1].action.execute(self.previous_board)
-    #     self.plies.append(ply)
-    #     ply.action.execute(self.board)
+    def __init__(self, mode: GameMode, player1: Player, player2: Player) -> None:
+        if player1.color == player2.color:
+            raise Exception("Players must have different colors")
+        else:
+            self.controller = BoardController(mode.init_board())
+            self.game_mode = mode
+            self.is_finished = False
+            self.players = {}
+            self.players[player1.color] = player1
+            self.players[player2.color] = player2
+    
+    def get_action(self, ply: Ply) -> Action:
+        return self.game_mode.get_action(ply, self.controller)
 
-    # def validate_add_ply(self, ply: Ply):
-    #     if self.is_finished or (len(self.plies) == 0 and ply.color != WHITE) \
-    #                         or (len(self.plies) > 0 and ply.color == self.plies[-1].color):
-    #         return False
-    #     elif Rules().validate(ply, self.board, self.previous_board):
-    #         if isinstance(ply.action, Promote) and not ply.promotion:
-    #             return False
-    #         self.add_ply(ply)
-    #         if Rules().is_finished(self.board, self.previous_board, ply.color.opposite_color()):
-    #             self.is_finished = True
-    #         return True
-    #     else:
-    #         return False
+    def validate(self, ply: Ply) -> bool:
+        return self.game_mode.validate(ply, self.controller)
 
-    def test(self, batch: Batch):
-        for command in batch:
+    def main_loop(self) -> None:
+        while not self.is_finished:
+            for color in [White(), Black()]:
+                player = self.players[color]
+                player.show_board(self.controller.board)
+                while True:
+                    ply = player.input_ply(color)
+                    ply.action = self.get_action(ply)
+                    if self.validate(ply):
+                        break
+                    else:
+                        player.invalid_move()
 
+                if isinstance(ply.action, Promote):
+                    ply.action.to_piece_class = player.input_promotion(self.controller.get_board())
+                
+                self.controller.execute(ply.action)
+
+                if self.game_mode.is_check(color, self.controller.get_board()):
+                    player.alert_check()
+
+                if self.game_mode.is_finished(color.opposite_color(), self.controller):
+                    self.is_finished = True
+                    if self.game_mode.is_win(color, self.controller):
+                        player.win()
+                        self.players[color.opposite_color()].loose()
+                    elif self.game_mode.is_win(color.opposite_color()):
+                        print('ª')
 
     def play(self):
         """

@@ -1,9 +1,12 @@
+from src.core.classes.color import Black, White
+from src.core.classes.players.terminal_player import TerminalPlayer
+from src.core.classes.game_modes.standard import Standard
 from src.core.classes.game import Game
 
 
 def main():
-    game = Game()
-    game.play()
+    game = Game(Standard(), TerminalPlayer(White()), TerminalPlayer(Black()))
+    game.main_loop()
 
 
 if __name__ == "__main__":

@@ -18,6 +18,9 @@ class Black(Color):
     def __str__(self):
         return "Black"
 
+    def __int__(self):
+        return 2
+
     def opposite_color(self):
         return White()
 
@@ -31,6 +34,9 @@ class White(Color):
 
     def __str__(self):
         return "White"
+
+    def __int__(self):
+        return 1
 
     def opposite_color(self):
         return Black()

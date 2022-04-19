@@ -13,6 +13,9 @@ class Bishop(Piece):
         White(): '\u2657'
     }
 
+    def __int__(self):
+        return 2*int(self.color)
+
     def can_move(self, vector: Vector) -> bool:
         vector = abs(vector)
         return vector.col == vector.row and vector.col != 0
