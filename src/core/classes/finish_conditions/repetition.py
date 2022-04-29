@@ -2,7 +2,7 @@ from ..handler import Handler
 from .finish_condition import FinishCondition
 from ..pieces import Pawn
 from ..board import Board
-from .finish_states.draw import Draw
+from .final_states import Draw, FinalState
 from ..ply import Ply
 
 
@@ -13,11 +13,7 @@ class Repetition(FinishCondition):
         super(Handler).__init__()
         self.counter = {}
 
-    def condition(self, ply: Ply, board: Board) -> bool:
-        self.update_counter(ply, board)
-        return self.counter[board] == 3
-
-    def update_counter(self, ply: Ply, board: Board) -> None:
+    def process(self, ply: Ply, board: Board) -> None:
         last_piece = ply.piece
         if isinstance(last_piece, Pawn) or ply.taken_piece:
             self.counter = {}
@@ -26,12 +22,8 @@ class Repetition(FinishCondition):
         else:
             self.counter[board] = 1
 
-    def handle(self, ply: Ply, board: Board) -> None:
-        
-        if self.condition():
-            return 
-        if self._next:
-            self._next.handle(board)
-        else:
-            return
+    def condition(self, ply: Ply, board: Board) -> bool:
+        return self.counter[board] == 3
 
+    def get_final_state(self, ply: Ply, board: Board) -> FinalState:
+        return Draw()

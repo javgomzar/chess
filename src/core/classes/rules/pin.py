@@ -5,6 +5,9 @@ from .rule import Rule
 
 
 class Pin(Rule):
+    def process(self, ply: Ply, board: Board) -> None:
+        return
+
     @classmethod
     def validate(self, ply: Ply, board: Board) -> bool:
         move = Move(ply.piece, ply.vector)

@@ -1,5 +1,4 @@
-from core.classes.finish_conditions.finish_condition import FinishCondition
-from ..handler import Handler
+from ..finish_conditions.fifty_moves import FinishCondition, FiftyMoves
 from ..action_rules import *
 from ..board import *
 from ..pieces import *
@@ -13,7 +12,7 @@ from .game_mode import GameMode
 class Standard(GameMode):
     rules : list[Rule] = [ValidColor(), ValidPieceMove(), TakeOwnPiece(), Block(), Pin()]
     action_rules : list[ActionRule] = [PromoteRule(), EnPassantRule(), CastleRule(), MoveRule()]
-    finish_conditions : list[FinishCondition] = [Check(), Repetition(), CountKingMoves()]
+    finish_conditions : list[FinishCondition] = [Repetition(), FiftyMoves(), Check()]
 
     def init_board(self) -> Board:
         board = Board()

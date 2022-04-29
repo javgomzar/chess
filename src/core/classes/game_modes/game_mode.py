@@ -23,6 +23,14 @@ class GameMode(ABC):
             if previous_rule:
                 previous_rule.set_next(rule)
             previous_rule = rule
+        for rule in self.action_rules:
+            if previous_rule:
+                previous_rule.set_next(rule)
+            previous_rule = rule
+        for rule in self.finish_rules:
+            if previous_rule:
+                previous_rule.set_next(rule)
+            previous_rule = rule
 
     def get_valid_moves(self, piece: Piece, board: Board) -> list[tuple]:
         """
@@ -48,7 +56,6 @@ class GameMode(ABC):
                 ply.is_draw = True
             return True
             
-
     def validate(self, ply: Ply, board: Board) -> bool:
         try:
             self.rules[0].handle(ply, board)

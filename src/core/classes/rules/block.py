@@ -8,6 +8,9 @@ class Block(Rule):
     """
     Checks if a ply is a movement blocked by other piece.
     """
+    def process(self, ply: Ply, board: Board) -> None:
+        return
+
     @classmethod
     def validate(self, ply: Ply, board: Board) -> bool:
         if not isinstance(ply.piece, Knight):

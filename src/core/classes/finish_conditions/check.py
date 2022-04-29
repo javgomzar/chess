@@ -1,3 +1,4 @@
+from .finish_condition import FinishCondition
 from .final_states import FinalState, Win, Draw
 from ..handler import Handler
 from ..position import Vector
@@ -7,9 +8,11 @@ from ..board import Board
 from ..ply import Ply
 from ..error_classes import PositionError
 
-class Check(Handler):
-    def condition(self, ply: Ply, board: Board) -> bool:
+class Check(FinishCondition):
+    def process(self, ply: Ply, board: Board) -> None:
         ply.is_check = self.is_check(ply.color.opposite_color(), board)
+
+    def condition(self, ply: Ply, board: Board) -> bool:
         return ply.is_finished
 
     def get_final_state(self, ply: Ply, board: Board) -> FinalState:

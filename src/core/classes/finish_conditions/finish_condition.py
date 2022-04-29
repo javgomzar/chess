@@ -7,7 +7,11 @@ from ..board import Board
 
 class FinishCondition(Handler):
     @abstractmethod
-    def condition(self, board) -> bool:
+    def process(self, ply: Ply, board: Board) -> None:
+        pass
+
+    @abstractmethod
+    def condition(self, ply: Ply, board: Board) -> bool:
         pass
 
     @abstractmethod
@@ -15,6 +19,7 @@ class FinishCondition(Handler):
         pass
 
     def handle(self, ply: Ply, board: Board) -> None:
+        self.process(ply, board)
         if self.condition(ply, board):
             raise self.get_final_state(ply, board)
         elif self._next:

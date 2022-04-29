@@ -5,7 +5,8 @@ from .rule import Rule
 
 
 class ValidColor(Rule):
+    def process(self, ply: Ply, board: Board) -> None:
+        ply.piece = board.get_piece(ply.from_position)
+
     def validate(self, ply: Ply, board: Board) -> bool:
-        piece = board.get_piece(ply.from_position)
-        ply.piece = piece
-        return piece and ply.color == piece.color
+        return ply.piece and ply.color == ply.piece.color

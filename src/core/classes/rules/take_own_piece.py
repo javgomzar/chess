@@ -4,10 +4,12 @@ from .rule import Rule
 
 
 class TakeOwnPiece(Rule):
-    def validate(self, ply: Ply, board: Board) -> None:
+    def process(self, ply: Ply, board: Board) -> None:
         taken_piece = board.get_piece(ply.to_position)
-        if taken_piece and taken_piece.color == ply.color:
+        ply.taken_piece = taken_piece
+
+    def validate(self, ply: Ply, board: Board) -> None:
+        if ply.taken_piece and ply.taken_piece.color == ply.color:
             return False
         else:
-            ply.taken_piece = taken_piece
             return True
