@@ -1,6 +1,6 @@
-from src.core.classes.color import Black, White
+from ..color import Black, White
 from src.core.classes.position import Vector
-from src.core.classes.pieces.piece import Piece
+from .piece import Piece
 
 
 class Knight(Piece):
@@ -10,9 +10,6 @@ class Knight(Piece):
         Black(): '\u265E',
         White(): '\u2658'
     }
-
-    def __init__(self):
-        return 3*int(self.color)
 
     def can_move(self, vector: Vector) -> bool:
         vector = abs(vector)

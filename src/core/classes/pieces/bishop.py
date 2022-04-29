@@ -1,6 +1,6 @@
-from src.core.classes.color import Black, White
+from ..color import Black, White
 from src.core.classes.position import Vector
-from src.core.classes.pieces.piece import Piece
+from .piece import Piece
 
 bishop_directions = [Vector(x,y) for x in [1,-1] for y in [1,-1]]
 
@@ -12,9 +12,6 @@ class Bishop(Piece):
         Black(): '\u265D',
         White(): '\u2657'
     }
-
-    def __int__(self):
-        return 2*int(self.color)
 
     def can_move(self, vector: Vector) -> bool:
         vector = abs(vector)

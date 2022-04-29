@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
-from src.core.classes.actions.move import Move
-from src.core.classes.board import Board
+from .move import Move
+from ..pieces import PieceManager
 from src.core.classes.position import Vector
-from src.core.classes.pieces import Pawn
+from ..pieces import Pawn
 
 
 @dataclass
@@ -11,24 +11,24 @@ class Promote:
     vector : Vector
     is_filled : bool = field(default=False, init=False)
 
-    def execute(self, board : Board) -> None:
-        self.from_position = board.get_position(self.piece)
+    def execute(self, piece_manager : PieceManager) -> None:
+        self.from_position = piece_manager.get_position(self.piece)
         self.to_position = self.from_position + self.vector
         self.move = Move(self.piece, self.vector)
-        self.move.execute(board)
+        self.move.execute(piece_manager)
         if self.is_filled:
             self.to_piece = self.to_piece_class(self.piece.color, has_moved=True)
-            board.replace(self.piece, self.to_piece)
+            piece_manager.replace(self.piece, self.to_piece)
 
-    def undo(self, board : Board) -> None:
+    def undo(self, piece_manager : PieceManager) -> None:
         if self.is_filled:
-            board.replace(self.to_piece, self.piece)
-        self.move.undo(board)
+            piece_manager.replace(self.to_piece, self.piece)
+        self.move.undo(piece_manager)
 
-    def redo(self, board : Board) -> None:
-        self.move.redo(board)
+    def redo(self, piece_manager : PieceManager) -> None:
+        self.move.redo(piece_manager)
         if self.is_filled:
-            board.replace(self.piece, self.to_piece)
+            piece_manager.replace(self.piece, self.to_piece)
 
     # def choose(self) -> None:
     #     self.to_piece_class = Input.promotion()

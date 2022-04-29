@@ -1,10 +1,10 @@
-from src.core.classes.pieces import Bishop, King, Knight, Pawn, Queen, Rook
-from src.core.classes.board import Board
-from src.core.classes.position import Position
+from ..pieces import Bishop, King, Knight, Pawn, Queen, Rook
+from ..board import Board
+from ..position import Position
 from src.config.constants import BISHOP_NAMES, INVALID_MOVE_MSG, INVALID_PROMOTION, INVALID_SQ, KING_NAMES, KNIGHT_NAMES, PAWN_NAMES, QUEEN_NAMES, TOWER_NAMES
-from src.core.classes.color import Color
-from src.core.classes.ply import Ply
-from src.core.error_classes.errors import PositionError
+from ..color import Color
+from ..ply import Ply
+from ..error_classes import PositionError
 
 
 class TerminalPlayer:
@@ -23,30 +23,27 @@ class TerminalPlayer:
         print("Check!")
 
     def win(self) -> None:
-        print(f"{self.color} win!")
+        print(f"Check mate. {self.color} wins!")
+
+    def lose(self) -> None:
+        print("Check mate. You lost.")
+
+    def draw(self) -> None:
+        print("It's a draw.")
 
     def input_ply(self, board: Board) -> Ply:
         while True:
             try:
-                from_position = Position(input(f"{str(self.color)} moves. Select starting square: "))
+                from_position = Position.from_notation(input(f"{str(self.color)} moves. Select starting square: "))
             except PositionError:
                 print(INVALID_SQ)
             except Exception as err:
                 raise err
             else:
                 break
-            # else:
-            #     piece = board.get_piece(from_position)
-            #     if piece:
-            #         if piece.color == color:
-            #             break
-            #         else:
-            #             print(INVALID_COLOR_MSG)
-            #     else:
-            #         print(EMPTY_SQ_MSG)
         while True:
             try:
-                to_position = Position(input("Select final square: "))
+                to_position = Position.from_notation(input("Select final square: "))
             except PositionError:
                 print(INVALID_SQ)
             except Exception as err:

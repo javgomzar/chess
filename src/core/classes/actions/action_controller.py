@@ -1,15 +1,17 @@
-from dataclasses import dataclass, field
-from src.core.classes.board import Board
-from src.core.classes.actions.action import Action
+from ..pieces.piece_manager import PieceManager
+from .action import Action
 
-@dataclass
-class BoardController():
-    board : Board = field(default_factory=Board)
-    undo_stack : list[Action] = field(default_factory=list, init=False)
-    redo_stack : list[Action] = field(default_factory=list, init=False)
+class ActionController(PieceManager):
+    undo_stack : list[Action]
+    redo_stack : list[Action]
+
+    def __init__(self):
+        super().__init__()
+        self.undo_stack = []
+        self.redo_stack = []
 
     def execute(self, action : Action) -> None:
-        action.execute(self.board)
+        action.execute(self)
         self.clear()
         self.undo_stack.append(action)
 
@@ -17,14 +19,14 @@ class BoardController():
         if not self.undo_stack:
             return
         action = self.undo_stack.pop()
-        action.undo(self.board)
+        action.undo(self)
         self.redo_stack.append(action)
 
     def redo(self) -> None:
         if not self.redo_stack:
             return
         action = self.redo_stack.pop()
-        action.redo(self.board)
+        action.redo(self)
         self.undo_stack.append(action)
 
     def undo_all(self) -> None:
@@ -42,17 +44,17 @@ class BoardController():
         self.undo()
         self.clear()
 
-    def try_action(self, action: Action) -> Board:
+    def try_action(self, action: Action):
         self.execute(action)
-        result = self.board.copy()
+        result = self.copy()
         self.roll_back()
         return result
 
-    def get_board(self) -> Board:
-        return self.board.copy()
-
-    def get_previous_board(self) -> Board:
+    def get_previous_board(self):
         self.undo()
-        board = self.board.copy()
+        board = self.copy()
         self.redo()
         return board
+
+    def last_action(self):
+        return self.undo_stack[-1]

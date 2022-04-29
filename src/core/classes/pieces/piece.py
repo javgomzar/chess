@@ -1,4 +1,4 @@
-from src.core.classes.color import Color
+from ..color import Color
 from src.core.classes.position import Position, PositionError, Vector
 from PIL import Image
 from abc import ABC, abstractmethod
@@ -20,7 +20,7 @@ class Piece(ABC):
         return self.unicode + ' '
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} object : color={self.color}, has_moved={self.has_moved}>"
+        return f"<{self.__class__.__name__} object : color={self.color}>"
 
     def __hash__(self):
         try:

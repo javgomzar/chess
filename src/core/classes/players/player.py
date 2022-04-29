@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from src.core.classes.pieces.queen import Queen
-from src.core.classes.color import Color
-from src.core.classes.board import Board
+from ..color import Color
+from ..board import Board
+from ..pieces import Queen
 from src.core.classes.ply import Ply
 
 
@@ -28,7 +28,11 @@ class Player(ABC):
         pass
 
     @abstractmethod
-    def loose(self) -> None:
+    def lose(self) -> None:
+        pass
+
+    @abstractmethod
+    def draw(self) -> None:
         pass
 
     @abstractmethod

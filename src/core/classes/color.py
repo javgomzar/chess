@@ -1,6 +1,6 @@
 from src.core.classes.position import Position, Vector
 from src.config.constants import MEDIA_PATH
-from src.core.abstract_classes.singleton import Singleton
+from src.core.metaclasses.singleton import Singleton
 
 
 class Color(metaclass=Singleton):
@@ -18,9 +18,6 @@ class Black(Color):
     def __str__(self):
         return "Black"
 
-    def __int__(self):
-        return 2
-
     def opposite_color(self):
         return White()
 
@@ -34,9 +31,6 @@ class White(Color):
 
     def __str__(self):
         return "White"
-
-    def __int__(self):
-        return 1
 
     def opposite_color(self):
         return Black()

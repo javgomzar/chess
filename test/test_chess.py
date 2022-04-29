@@ -8,11 +8,11 @@ from os.path import isdir
 from string import ascii_lowercase
 
 from src.core.classes.position import *
-from src.core.classes.color import *
-from src.core.classes.board import *
-from src.core.classes.pieces import *
-from src.core.classes.actions import *
-from src.core.classes.board_controller import *
+from core.classes.color import *
+from core.classes.board.board import *
+from src.core.classes.board.pieces import *
+from src.core.classes.board.actions import *
+from core.classes.actions.action_controller import *
 from src.core.classes.game import *
 
 class TestChess(ut.TestCase):
@@ -67,6 +67,21 @@ class TestChess(ut.TestCase):
                     
                     for piece_class in [Bishop, Rook, Queen]:
                         pass
+                    
+    def test_hash(self):
+        table = "\n           ╔══════╤════════╤════════╤══════╤═══════╤══════╗\n" + \
+                  "           ║ Pawn │ Bishop │ Knight │ Rook │ Queen │ King ║\n" + \
+                  "   ╔═══════┼──────┼────────┼────────┼──────┼───────┼──────╢\n" + \
+                  "   ║ Black │   2  │    4   │    6   │   8  │   10  │  12  ║\n" + \
+                  "   ║───────┼──────┼────────┼────────┼──────┼───────┼──────║\n" + \
+                  "   ║ White │   1  │    3   │    5   │   7  │   9   │  11  ║\n" + \
+                  "   ╚═══════╧══════╧════════╧════════╧══════╧═══════╧══════╝\n"
+        print("\n")
+        for color in [Black(),White()]:
+            for piece_class in [Pawn,Bishop,Knight,Rook,Queen,King]:
+                print(int(piece_class(color)))
+        
+
 
     def test_board(self):
         board = Board()

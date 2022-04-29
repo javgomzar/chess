@@ -1,6 +1,6 @@
-from src.core.classes.color import Black, White
+from ..color import Black, White
 from src.core.classes.position import Vector
-from src.core.classes.pieces.piece import Piece
+from .piece import Piece
 
 queen_directions = [Vector(x,y) for x in [1,-1] for y in [1,-1]] + \
                    [Vector(sign*vertical,sign*(1 - vertical)) for vertical in [0,1] for sign in [-1,1]]
@@ -13,9 +13,6 @@ class Queen(Piece):
         Black(): '\u265B',
         White(): '\u2655'
     }
-
-    def __int__(self):
-        return 5
 
     def can_move(self, vector: Vector) -> bool:
         vector = abs(vector)

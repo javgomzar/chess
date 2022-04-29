@@ -1,13 +1,17 @@
+from abc import abstractmethod
 from typing import Protocol
-from src.core.classes.board import Board
+from ..pieces import PieceManager
 
 
 class Action(Protocol):
-    def execute(self, board : Board) -> None:
+    @abstractmethod
+    def execute(self, piece_manager : PieceManager) -> None:
         pass
 
-    def undo(self, board : Board) -> None:
+    @abstractmethod
+    def undo(self, piece_manager : PieceManager) -> None:
         pass
 
-    def redo(self, board : Board) -> None:
+    @abstractmethod
+    def redo(self, piece_manager : PieceManager) -> None:
         pass

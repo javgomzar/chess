@@ -1,6 +1,6 @@
-from src.core.classes.color import Black, White
+from ..color import Black, White
 from src.core.classes.position import Vector
-from src.core.classes.pieces.piece import Piece
+from .piece import Piece
 
 
 class King(Piece):
@@ -12,9 +12,6 @@ class King(Piece):
         White(): '\u2654'
     }
 
-    def __int__(self):
-        return 6*int(self.color)
-
     def can_move(self, vector: Vector) -> bool:
         vector = abs(vector)
         return max(vector.col, vector.row) == 1 and vector.col + vector.row != 0 or \
@@ -22,6 +19,3 @@ class King(Piece):
 
     def is_castle(self, vector: Vector) -> bool:
         return not self.has_moved and abs(vector) == Vector(2,0)
-
-    def is_left_castle(self, vector: Vector) -> bool:
-        return vector.col < 0

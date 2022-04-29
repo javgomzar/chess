@@ -3,3 +3,6 @@ class VectorError(ValueError):
 
 class PositionError(ValueError):
     pass
+
+class InvalidMove(ValueError):
+    pass
