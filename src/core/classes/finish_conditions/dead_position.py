@@ -15,7 +15,7 @@ class DeadPosition(FinishCondition):
         pass
 
     def condition(self, ply: Ply, board: Board) -> bool:
-        pass
+        return False
 
     def get_final_state(self, ply: Ply, board: Board) -> FinalState:
         return Draw()

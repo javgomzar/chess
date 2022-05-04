@@ -18,11 +18,11 @@ class FinishCondition(Handler):
     def get_final_state(self, ply: Ply, board: Board) -> FinalState:
         pass
 
-    def handle(self, ply: Ply, board: Board) -> None:
+    def handle(self, ply: Ply, board: Board) -> FinalState:
         self.process(ply, board)
         if self.condition(ply, board):
-            raise self.get_final_state(ply, board)
+            return self.get_final_state(ply, board)
         elif self._next:
             self._next.handle(ply, board)
         else:
-            return
+            return None
