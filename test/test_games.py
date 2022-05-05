@@ -12,9 +12,10 @@ from src.core.classes.ply import *
 from src.core.classes.actions.action_controller import *
 from src.core.classes.game import *
 
-class TestChess(ut.TestCase):
 
+class TestChess(ut.TestCase):
     def test_game1(self):
+        print("\nGame 1:\n")
         game = Game(Standard(), 
         BatchPlayer(White(),[
             Ply(White(), Position.from_notation('e2'), Position.from_notation('e4')),
@@ -28,27 +29,29 @@ class TestChess(ut.TestCase):
             Ply(Black(), Position.from_notation('a5'), Position.from_notation('a4'))
         ]))
         game.main_loop()
-        print(game.board.__hash__())
         self.assertTrue(game.is_finished)
 
-    # Complete game
-    # def test_game2(self):
-    #     game = Game(Standard(), 
-    #     BatchPlayer(White(),[
-    #         Ply(White(), Position.from_notation('e2'), Position.from_notation('e4')),
-    #         Ply(White(), Position.from_notation('f1'), Position.from_notation('b5')),
-    #         Ply(White(), Position.from_notation('g1'), Position.from_notation('f3')),
-    #         Ply(White(), Position.from_notation('e1'), Position.from_notation('g1'))
-    #     ]),
-    #     BatchPlayer(Black(),[
-    #         Ply(Black(), Position.from_notation('e7'), Position.from_notation('e5')),
-    #         Ply(Black(), Position.from_notation('g8'), Position.from_notation('f6')),
-    #         Ply(Black(), Position.from_notation('f8'), Position.from_notation('c5')),
-    #         Ply(Black(), Position.from_notation('e8'), Position.from_notation('g8'))
-    #     ]))
-    #     game.main_loop()
-
-
+    def test_game2(self):
+        print("\nGame 2: \n")
+        game = Game(Standard(), 
+        BatchPlayer(White(),[
+            Ply(White(), Position.from_notation('g1'), Position.from_notation('f3')),
+            Ply(White(), Position.from_notation('f3'), Position.from_notation('g1')),
+            Ply(White(), Position.from_notation('g1'), Position.from_notation('f3')),
+            Ply(White(), Position.from_notation('f3'), Position.from_notation('g1')),
+            Ply(White(), Position.from_notation('g1'), Position.from_notation('f3')),
+            Ply(White(), Position.from_notation('f3'), Position.from_notation('g1')),
+        ]),
+        BatchPlayer(Black(),[
+            Ply(Black(), Position.from_notation('g8'), Position.from_notation('f6')),
+            Ply(Black(), Position.from_notation('f6'), Position.from_notation('g8')),
+            Ply(Black(), Position.from_notation('g8'), Position.from_notation('f6')),
+            Ply(Black(), Position.from_notation('f6'), Position.from_notation('g8')),
+            Ply(Black(), Position.from_notation('g8'), Position.from_notation('f6')),
+            Ply(Black(), Position.from_notation('f6'), Position.from_notation('g8')),
+        ]))
+        game.main_loop()
+        self.assertTrue(game.is_finished and isinstance(game.final_state, Draw))
 
 
 if __name__ == '__main__':

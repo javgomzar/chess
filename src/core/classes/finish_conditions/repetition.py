@@ -14,16 +14,18 @@ class Repetition(FinishCondition):
         self.counter = {}
 
     def process(self, ply: Ply, board: Board) -> None:
+        board_hash = board.string_hash()
         last_piece = ply.piece
         if isinstance(last_piece, Pawn) or ply.taken_piece:
             self.counter = {}
-        elif board in self.counter.keys():
-            self.counter[board] += 1
+        elif board_hash in self.counter.keys():
+            self.counter[board_hash] += 1
         else:
-            self.counter[board] = 1
+            self.counter[board_hash] = 1
 
     def condition(self, ply: Ply, board: Board) -> bool:
-        return self.counter[board] == 3
-
+        board_hash = board.string_hash()
+        return self.counter[board_hash] == 3 if board_hash in self.counter.keys() else False
+        
     def get_final_state(self, ply: Ply, board: Board) -> FinalState:
         return Draw()

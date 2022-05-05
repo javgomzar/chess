@@ -1,4 +1,5 @@
 from abc import abstractmethod
+import logging
 from ..handler import Handler
 from ..ply import Ply
 from .final_states import FinalState
@@ -21,6 +22,7 @@ class FinishCondition(Handler):
     def handle(self, ply: Ply, board: Board) -> FinalState:
         self.process(ply, board)
         if self.condition(ply, board):
+            logging.debug(f"Game ended because of finish condition {self.__class__.__name__}")
             return self.get_final_state(ply, board)
         elif self._next:
             self._next.handle(ply, board)

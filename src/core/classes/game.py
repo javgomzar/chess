@@ -1,3 +1,4 @@
+from .finish_conditions import FinalState, Draw, Win
 from .rules import *
 from .board import *
 from .actions import *
@@ -15,6 +16,7 @@ class Game():
     board: Board
     game_mode: GameMode
     is_finished: bool
+    final_state: FinalState = None
     players: dict[Color, Player]
 
     def __init__(self, mode: GameMode, player1: Player, player2: Player) -> None:
@@ -52,15 +54,17 @@ class Game():
                 self.board.execute(ply.action)
 
                 opposite_player = self.players[color.opposite_color()]
-                if self.game_mode.is_finished(ply, self.board):
+                final_state = self.game_mode.is_finished(ply, self.board)
+                if final_state:
                     self.is_finished = True
+                    self.final_state = final_state
                     player.show_board(self.board)
                     opposite_player.show_board(self.board)
-                    if ply.is_draw:
+                    if isinstance(final_state, Draw):
                         player.draw()
                         opposite_player.draw()
                         break
-                    else:
+                    elif isinstance(final_state, Win):
                         player.win()
                         opposite_player.lose()
                         break

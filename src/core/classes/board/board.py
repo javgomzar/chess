@@ -23,7 +23,7 @@ class Board(ActionController):
                 result = result.replace(str(row+1) + str(col+1), symbol)
         return result
 
-    def __hash__(self):
+    def string_hash(self) -> str:
         hash = ''
         for row in range(0,8):
             for col in range(0,8):
@@ -33,21 +33,7 @@ class Board(ActionController):
                     color_hash = piece.color.__class__.__name__[0]
                     hash += color_hash + piece_hash
                 hash += '-'
-            hash += '\n'
         return hash
-
-    # def __eq__(self, other) -> bool:
-    #     try:
-    #         other.positions
-    #     except:
-    #         return False
-    #     if isinstance(other.positions, dict) and len(self.positions) == len(other.positions):
-    #         for piece in self.positions.keys():
-    #             if piece not in other.positions.keys():
-    #                 break
-    #         else:
-    #             return True
-    #     return False
 
     def image(self) -> Image:
         board_img = Image.open(BOARD_IMG)

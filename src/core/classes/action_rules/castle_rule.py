@@ -1,10 +1,10 @@
-from ..actions import Action, Castle
+from ..actions import Action, Castle, Move
 from ..position import Position, Vector
 from .action_rule import ActionRule
 from ..pieces import King, Rook
 from ..ply import Ply
 from ..board import Board
-
+from ..finish_conditions import Check
 
 
 class CastleRule(ActionRule):
@@ -15,7 +15,13 @@ class CastleRule(ActionRule):
             rook_col = 0 if direction == Vector(-1,0) else 7
             rook = board.get_piece(Position(rook_col, ply.color.king_row))
             if rook and isinstance(rook, Rook) and not rook.has_moved:
-                return True
+                possible_board = board
+                for i in range(0,2):
+                    if Check.is_check(ply.color, possible_board):
+                        break
+                    possible_board = possible_board.try_action(Move(piece, direction))
+                else:
+                    return True
         return False
 
     def get_action(sel, ply: Ply) -> Action:
