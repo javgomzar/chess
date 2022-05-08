@@ -1,5 +1,4 @@
-from abc import ABC, abstractmethod
-
+from abc import ABC, abstractmethod, abstractclassmethod
 from ..finish_conditions import FinalState
 from ..pieces import Piece
 from ..ply import Ply
@@ -11,7 +10,7 @@ class GameMode(ABC):
     def init_board(self) -> Board:
         pass
 
-    @abstractmethod
+    @abstractclassmethod
     def validate(self, ply: Ply, board: Board) -> bool:
         pass
 

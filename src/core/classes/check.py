@@ -1,41 +1,20 @@
-from .finish_condition import FinishCondition
-from .final_states import FinalState, Win, Draw
-from ..handler import Handler
-from ..position import Vector
-from ..pieces import Bishop, Knight, King, Pawn, Queen, Rook
-from ..color import Color
-from ..board import Board
-from ..ply import Ply
-from ..error_classes import PositionError
+from .position import Vector, Position
+from .pieces import Bishop, Knight, King, Pawn, Queen, Rook
+from .color import Color
+from .board import Board
+from .error_classes import PositionError
 
-class Check(FinishCondition):
-    def process(self, ply: Ply, board: Board) -> None:
-        ply.is_check = self.is_check(ply.color.opposite_color(), board)
 
-    def condition(self, ply: Ply, board: Board) -> bool:
-        return ply.is_finished
-
-    def get_final_state(self, ply: Ply, board: Board) -> FinalState:
-        return Win() if ply.is_check else Draw()
-
+class Check:
     @classmethod
-    def is_check(self, color: Color, board: Board) -> bool:
+    def is_check(color: Color, board: Board) -> bool:
         """
         Checks if a board contains a check for the king of a given color.
         """
         king_position = board.get_king_position(color)
 
-        # Knight checks... and king checks?
-        for piece_class in [Knight, King]:
-            for vector in piece_class.move_vectors:
-                try:
-                    pointer = king_position + vector
-                except PositionError:
-                    pass
-                else:
-                    piece = board.get_piece(pointer)
-                    if piece and isinstance(piece, piece_class) and piece.color != color:
-                        return True
+        # Knight and king checks
+        if Check.knight_and_king_checks(color, board, king_position)
 
         # Bishop and rook checks (and Queen)
         for piece_class in [Bishop, Rook]:
@@ -67,3 +46,24 @@ class Check(FinishCondition):
                 return True
 
         return False
+
+    @classmethod
+    def knight_and_king_checks(color: Color, board: Board, king_position: Position) -> bool:
+        for piece_class in [Knight, King]:
+            for vector in piece_class.move_vectors:
+                try:
+                    pointer = king_position + vector
+                except PositionError:
+                    pass
+                else:
+                    piece = board.get_piece(pointer)
+                    if piece and isinstance(piece, piece_class) and piece.color != color:
+                        return True
+
+    @classmethod
+    def bishop_rook_and_queen_checks() -> bool:
+        pass
+
+    @classmethod
+    def pawn_checks(self) -> bool:
+        pass

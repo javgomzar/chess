@@ -64,6 +64,9 @@ class Position(Vector):
         else:
             raise PositionError(f"Row and col must be between 0 and 7")
 
+    def __repr__(self):
+        return f"<{self.__class__.__name__} object : ({self.col}, {self.row}), '{self.__str__()}'>"
+
     def __str__(self):
         return ascii_lowercase[0:8][self.col] + str(self.row + 1)
 

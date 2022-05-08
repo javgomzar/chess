@@ -25,6 +25,6 @@ class FinishCondition(Handler):
             logging.debug(f"Game ended because of finish condition {self.__class__.__name__}")
             return self.get_final_state(ply, board)
         elif self._next:
-            self._next.handle(ply, board)
+            return self._next.handle(ply, board)
         else:
             return None

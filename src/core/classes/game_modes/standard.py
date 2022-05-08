@@ -13,9 +13,10 @@ from .game_mode import GameMode
 class Standard(GameMode):
     rules : list[Rule] = [ValidColor(), ValidPieceMove(), TakeOwnPiece(), Block(), Pin()]
     action_rules : list[ActionRule] = [PromoteRule(), EnPassantRule(), CastleRule(), MoveRule()]
-    finish_conditions : list[FinishCondition] = [Repetition(), FiftyMoves(), DeadPosition()]
+    finish_conditions : list[FinishCondition] 
 
     def __init__(self):
+        self.finish_conditions = [Repetition(), FiftyMoves(), DeadPosition(), AvailableMoves(self.__class__)]
         self.connect_rules()
 
     def connect_rules(self) -> None:
@@ -34,6 +35,7 @@ class Standard(GameMode):
                         board.add(piece_class(color), Position(col,row))
         return board
 
+    @classmethod
     def validate(self, ply: Ply, board: Board) -> bool:
         try:
             self.rules[0].handle(ply, board)
@@ -49,12 +51,3 @@ class Standard(GameMode):
             final_state = self.finish_conditions[0].handle(ply, board)
             if final_state:
                 return final_state
-            else:
-                for piece in board.get_pieces(color=ply.color.opposite_color(), is_active=True):
-                    if len(self.get_valid_moves(piece, board)) > 0:
-                        return None
-                else:
-                    if Check.is_check(ply.color.opposite_color(), board):
-                        return Win()
-                    else:
-                        return Draw()
