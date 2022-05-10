@@ -15,7 +15,7 @@ class BatchPlayer(Player):
         print(board)
 
     def invalid_move(self) -> None:
-        raise InvalidMove()
+        raise InvalidMove("Invalid move")
 
     def alert_check(self) -> None:
         print("Check!")

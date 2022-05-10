@@ -7,7 +7,7 @@ from .error_classes import PositionError
 
 class Check:
     @classmethod
-    def is_check(color: Color, board: Board) -> bool:
+    def is_check(self, color: Color, board: Board) -> bool:
         """
         Checks if a board contains a check for the king of a given color.
         """
@@ -18,7 +18,7 @@ class Check:
             or Check.pawn_checks(color, board, king_position)
 
     @classmethod
-    def knight_and_king_checks(color: Color, board: Board, king_position: Position) -> bool:
+    def knight_and_king_checks(self, color: Color, board: Board, king_position: Position) -> bool:
         for piece_class in [Knight, King]:
             for vector in piece_class.move_vectors:
                 try:
@@ -33,7 +33,7 @@ class Check:
             return False
 
     @classmethod
-    def bishop_rook_and_queen_checks(color: Color, board: Board, king_position: Position) -> bool:
+    def bishop_rook_and_queen_checks(self, color: Color, board: Board, king_position: Position) -> bool:
         for piece_class in [Bishop, Rook]:
             for direction in piece_class.move_directions:
                 pointer = king_position
@@ -55,7 +55,7 @@ class Check:
             return False
 
     @classmethod
-    def pawn_checks(color: Color, board: Board, king_position: Position) -> bool:
+    def pawn_checks(self, color: Color, board: Board, king_position: Position) -> bool:
         for direction in [color.pawn_direction + Vector(delta_col, 0) for delta_col in [-1,1]]:
             try:
                 pointer = king_position + direction
