@@ -103,7 +103,8 @@ DIRECTIONS = {
 }
 
 # Paths & Filenames
-LOCAL_PATH = "D:/Code/Python/telegram_bot/"
+LOCAL_PATH = "D:/Code/Python/chess/"
+MEDIA_PATH = LOCAL_PATH +"media/"
 IMG_DICT = {
     BLACK: {
         PAWN: LOCAL_PATH + "media/Black/Pawn.png",
