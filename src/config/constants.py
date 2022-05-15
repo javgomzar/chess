@@ -44,8 +44,8 @@ KNIGHT = "KNIGHT"
 KNIGHT_NAMES = ["knight", "n", "N", "Knight", "KNIGHT"]
 BISHOP = "BISHOP"
 BISHOP_NAMES = ["bishop", "b", "B", "Bishop", "BISHOP"]
-TOWER = "TOWER"
-TOWER_NAMES = ["tower", "t", "T", "Tower", "TOWER"]
+ROOK = "ROOK"
+ROOK_NAMES = ["rook", "r", "R", "Rook", "ROOK"]
 QUEEN = "QUEEN"
 QUEEN_NAMES = ["queen", "q", "Q", "Queen", "QUEEN"]
 KING = "KING"
@@ -62,7 +62,7 @@ UNICODE_DICT = {
     BLACK: {
         KING: "\u265A",
         QUEEN: "\u265B",
-        TOWER: "\u265C",
+        ROOK: "\u265C",
         BISHOP: "\u265D",
         KNIGHT: "\u265E",
         PAWN: "\u265F"
@@ -70,7 +70,7 @@ UNICODE_DICT = {
     WHITE: {
         KING: "\u2654", 
         QUEEN: "\u2655",
-        TOWER: "\u2656",
+        ROOK: "\u2656",
         BISHOP: "\u2657",
         KNIGHT: "\u2658",
         PAWN: "\u2659"
@@ -98,7 +98,7 @@ TOWER_DIRECTIONS = [(0,1),(0,-1),(-1,0),(0,-1)]
 QUEEN_DIRECTIONS = BISHOP_DIRECTIONS + TOWER_DIRECTIONS
 DIRECTIONS = {
     BISHOP: BISHOP_DIRECTIONS,
-    TOWER: TOWER_DIRECTIONS,
+    ROOK: TOWER_DIRECTIONS,
     QUEEN: QUEEN_DIRECTIONS
 }
 
@@ -110,7 +110,7 @@ IMG_DICT = {
         PAWN: LOCAL_PATH + "media/Black/Pawn.png",
         KNIGHT: LOCAL_PATH + "media/Black/Knight.png",
         BISHOP: LOCAL_PATH + "media/Black/Bishop.png",
-        TOWER: LOCAL_PATH + "media/Black/Tower.png",
+        ROOK: LOCAL_PATH + "media/Black/Rook.png",
         QUEEN: LOCAL_PATH + "media/Black/Queen.png",
         KING: LOCAL_PATH + "media/Black/King.png"
     },
@@ -118,7 +118,7 @@ IMG_DICT = {
         PAWN: LOCAL_PATH + "media/White/Pawn.png",
         KNIGHT: LOCAL_PATH + "media/White/Knight.png",
         BISHOP: LOCAL_PATH + "media/White/Bishop.png",
-        TOWER: LOCAL_PATH + "media/White/Tower.png",
+        ROOK: LOCAL_PATH + "media/White/Tower.png",
         QUEEN: LOCAL_PATH + "media/White/Queen.png",
         KING: LOCAL_PATH + "media/White/King.png"
     }

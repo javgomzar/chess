@@ -22,19 +22,7 @@ class ActionRule(Rule):
         if isinstance(self._next, ActionRule) or (self._next and ply.action):
             self._next.handle(ply, board)
         elif not ply.action:
-                logging.debug(f"Invalid move; '{self.__class__.__name__}' denied the ply.")
-                raise InvalidMove()
+                print(f"Invalid move; '{self.__class__.__name__}' denied the ply from {ply.from_position} to {ply.to_position}.")
+                raise InvalidMove(f"Invalid move; '{self.__class__.__name__}' denied the ply from {ply.from_position} to {ply.to_position}.")
         else:
             return
-
-    # def handle(self, ply: Ply, board: Board) -> None:
-    #     is_valid = self.validate(ply, board)
-    #     if is_valid:
-    #         ply.action = self.get_action(ply)
-    #         return
-    #     else:
-    #         if self._next:
-    #             self._next.handle(ply, board)
-    #         else:
-    #             logging.debug(f"Invalid move; '{self.__class__.__name__}' denied the ply.")
-    #             raise InvalidMove()

@@ -24,5 +24,5 @@ class Rule(Handler):
             else:
                 return
         else:
-            logging.debug(f"Invalid move. '{self.__class__.__name__}' denied the ply.")
-            raise InvalidMove()
+            print(f"Invalid move. '{self.__class__.__name__}' denied the ply from {ply.from_position} to {ply.to_position}.")
+            raise InvalidMove(f"Invalid move. '{self.__class__.__name__}' denied the ply from {ply.from_position} to {ply.to_position}.")

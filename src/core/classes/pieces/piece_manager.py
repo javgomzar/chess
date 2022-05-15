@@ -51,6 +51,7 @@ class PieceManager:
     def replace(self, old_piece: Piece, new_piece: Piece) -> None:
         position = self.get_position(old_piece)
         self.delete(old_piece)
+        new_piece.id = old_piece.id
         self.set_position(new_piece, position)
 
     def get_piece(self, position : Position) -> Piece:
@@ -61,7 +62,7 @@ class PieceManager:
     def get_king_position(self, color: Color) -> Position:
         return extract([self.get_position(piece) for piece in self.get_pieces(color) if isinstance(piece, King)])
 
-    def get_pieces(self, color : Color = None, is_active : bool = None) -> list[Piece]:
+    def get_pieces(self, color : Color = None, is_active : bool = None, piece_type: type = None) -> list[Piece]:
         pieces = self.__iter__()
         if color:
             pieces = [piece for piece in pieces if piece.color == color]
@@ -70,6 +71,8 @@ class PieceManager:
                 pieces = [piece for piece in pieces if self.get_position(piece)]
             else:
                 pieces = [piece for piece in pieces if not self.get_position(piece)]
+        if piece_type:
+            pieces = [piece for piece in pieces if isinstance(piece, piece_type)]
         return pieces
 
     def copy(self):

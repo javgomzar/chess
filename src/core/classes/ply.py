@@ -1,3 +1,4 @@
+import re
 from dataclasses import dataclass, field
 
 from .actions import Action
@@ -21,7 +22,6 @@ class Ply:
     is_draw : bool = field(init=False, default=False)
     is_finished : bool = field(init=False, default=False)
     action: Action = field(init=False, default=None)
-
 
     def __post_init__(self):
         self.vector = self.to_position - self.from_position

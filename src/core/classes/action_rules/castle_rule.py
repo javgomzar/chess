@@ -5,6 +5,7 @@ from ..pieces import King, Rook
 from ..ply import Ply
 from ..board import Board
 from ..finish_conditions import Check
+from ..error_classes import InvalidMove
 
 
 class CastleRule(ActionRule):
@@ -22,6 +23,7 @@ class CastleRule(ActionRule):
                     possible_board = possible_board.try_action(Move(piece, direction))
                 else:
                     return True
+                raise InvalidMove()
         return False
 
     def get_action(sel, ply: Ply) -> Action:

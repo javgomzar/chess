@@ -1,7 +1,7 @@
 from ..pieces import Bishop, King, Knight, Pawn, Queen, Rook
 from ..board import Board
 from ..position import Position
-from src.config.constants import BISHOP_NAMES, INVALID_MOVE_MSG, INVALID_PROMOTION, INVALID_SQ, KING_NAMES, KNIGHT_NAMES, PAWN_NAMES, QUEEN_NAMES, TOWER_NAMES
+from src.config.constants import BISHOP_NAMES, INVALID_MOVE_MSG, INVALID_PROMOTION, INVALID_SQ, KING_NAMES, KNIGHT_NAMES, PAWN_NAMES, QUEEN_NAMES, ROOK_NAMES
 from ..color import Color
 from ..ply import Ply
 from ..error_classes import PositionError
@@ -73,7 +73,7 @@ class TerminalPlayer:
             return Knight
         elif name in BISHOP_NAMES:
             return Bishop
-        elif name in TOWER_NAMES:
+        elif name in ROOK_NAMES:
             return Rook
         elif name in QUEEN_NAMES:
             return Queen

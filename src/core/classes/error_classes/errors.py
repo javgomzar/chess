@@ -6,3 +6,9 @@ class PositionError(ValueError):
 
 class InvalidMove(ValueError):
     pass
+
+class AmbiguousMove(ValueError):
+    pass
+
+class InvalidInput(ValueError):
+    pass

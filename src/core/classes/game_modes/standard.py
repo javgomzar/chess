@@ -27,6 +27,7 @@ class Standard(GameMode):
                     previous_rule.set_next(rule)
                 previous_rule = rule
 
+    @classmethod
     def init_board(self) -> Board:
         board = Board()
         for color in [Black(), White()]:

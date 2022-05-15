@@ -1,1 +1,1 @@
-from .errors import PositionError, VectorError, InvalidMove
+from .errors import PositionError, VectorError, InvalidMove, AmbiguousMove, InvalidInput
