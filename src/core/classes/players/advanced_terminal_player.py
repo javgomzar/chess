@@ -35,13 +35,13 @@ class AdvancedTerminalPlayer(TerminalPlayer):
 
         match = re.search(general_regex, notation)
         if not match:
-            short_castle_match = re.search(short_castle_regex, notation)
-            king_row = self.color.king_row
-            if short_castle_match:
-                return Ply(self.color, Position(4, king_row), Position(6, king_row))
             long_castle_match = re.search(long_castle_regex, notation)
+            king_row = self.color.king_row
             if long_castle_match:
                 return Ply(self.color, Position(4, king_row), Position(2, king_row))
+            short_castle_match = re.search(short_castle_regex, notation)
+            if short_castle_match:
+                return Ply(self.color, Position(4, king_row), Position(6, king_row))
             raise InvalidInput()
 
         non_pawn_symbol = match.group(1)
