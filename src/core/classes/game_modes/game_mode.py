@@ -6,7 +6,7 @@ from ..board import Board
 
 
 class GameMode(ABC):
-    @abstractmethod
+    @abstractclassmethod
     def init_board(self) -> Board:
         pass
 

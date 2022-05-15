@@ -29,9 +29,6 @@ class Game():
             self.players = {}
             self.players[player1.color] = player1
             self.players[player2.color] = player2
-    
-    def get_action(self, ply: Ply) -> Action:
-        return self.game_mode.get_action(ply, self.board)
 
     def validate(self, ply: Ply) -> bool:
         return self.game_mode.validate(ply, self.board)
@@ -42,7 +39,7 @@ class Game():
                 player = self.players[color]
                 player.show_board(self.board)
                 while True:
-                    ply = player.input_ply(color)
+                    ply = player.input_ply(self.board)
                     if self.validate(ply):
                         break
                     else:
@@ -50,6 +47,7 @@ class Game():
 
                 if isinstance(ply.action, Promote):
                     ply.action.to_piece_class = player.input_promotion(self.board)
+                    ply.action.is_filled = True
                 
                 self.board.execute(ply.action)
 
