@@ -8,16 +8,10 @@ class Piece(ABC):
     color : Color
     has_moved : bool
     move_vectors : list[Vector]
-    image_path : str
 
     def __init__(self, color: Color, has_moved : bool = False) -> None:
         self.color = color
-        self.image_path = color.image_folder_path + self.image_file
-        self.unicode = self.unicode[color]
         self.has_moved = has_moved
-
-    def __str__(self) -> str:
-        return self.unicode + ' '
 
     def __repr__(self):
         return f"<{self.__class__.__name__} object : color={self.color}>"
@@ -32,10 +26,7 @@ class Piece(ABC):
         try:
             return self.id == other.id
         except:
-            return False
-
-    def image(self) -> Image:
-        return Image.open(self.image_path)
+            return id(self) == id(other)
 
     def available_positions(self, from_position: Position) -> list[Position]:
         positions = []

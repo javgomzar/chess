@@ -1,36 +1,13 @@
 from ..pieces import Bishop, King, Knight, Pawn, Queen, Rook
 from ..board import Board
 from ..position import Position
-from src.config.constants import BISHOP_NAMES, INVALID_MOVE_MSG, INVALID_PROMOTION, INVALID_SQ, KING_NAMES, KNIGHT_NAMES, PAWN_NAMES, QUEEN_NAMES, ROOK_NAMES
-from ..color import Color
+from src.config.constants import BISHOP_NAMES, INVALID_PROMOTION, INVALID_SQ, KING_NAMES, KNIGHT_NAMES, PAWN_NAMES, QUEEN_NAMES, ROOK_NAMES
+from .player import Player
 from ..ply import Ply
 from ..error_classes import PositionError
 
 
-class TerminalPlayer:
-    color: Color
-
-    def __init__(self, color: Color):
-        self.color = color
-
-    def show_board(self, board: Board) -> None:
-        print(board)
-
-    def invalid_move(self) -> None:
-        print(INVALID_MOVE_MSG)
-
-    def alert_check(self) -> None:
-        print("Check!")
-
-    def win(self) -> None:
-        print(f"Check mate. {self.color} wins!")
-
-    def lose(self) -> None:
-        print("Check mate. You lost.")
-
-    def draw(self) -> None:
-        print("It's a draw.")
-
+class TerminalPlayer(Player):
     def input_ply(self, board: Board) -> Ply:
         while True:
             try:

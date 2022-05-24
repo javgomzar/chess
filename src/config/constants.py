@@ -105,30 +105,6 @@ DIRECTIONS = {
 # Paths & Filenames
 LOCAL_PATH = "D:/Code/Python/chess/"
 MEDIA_PATH = LOCAL_PATH +"media/"
-IMG_DICT = {
-    BLACK: {
-        PAWN: LOCAL_PATH + "media/Black/Pawn.png",
-        KNIGHT: LOCAL_PATH + "media/Black/Knight.png",
-        BISHOP: LOCAL_PATH + "media/Black/Bishop.png",
-        ROOK: LOCAL_PATH + "media/Black/Rook.png",
-        QUEEN: LOCAL_PATH + "media/Black/Queen.png",
-        KING: LOCAL_PATH + "media/Black/King.png"
-    },
-    WHITE: {
-        PAWN: LOCAL_PATH + "media/White/Pawn.png",
-        KNIGHT: LOCAL_PATH + "media/White/Knight.png",
-        BISHOP: LOCAL_PATH + "media/White/Bishop.png",
-        ROOK: LOCAL_PATH + "media/White/Tower.png",
-        QUEEN: LOCAL_PATH + "media/White/Queen.png",
-        KING: LOCAL_PATH + "media/White/King.png"
-    }
-}
 
-BOARD_IMG = LOCAL_PATH + "media/Board.png"
 TMP_FILENAME = "tmp.png"
 TMP_PATH = LOCAL_PATH + "media/tmp/" + TMP_FILENAME
-
-# Regular Expressions
-SQ_RE = "([a-h,A-H][1-8])"
-MOVE_RE = "([a-h,A-H][1-8]).*([a-h,A-H][1-8])"
-PIECE_RE =  "([K,Q,T,B,N])([a-h][1-8])"

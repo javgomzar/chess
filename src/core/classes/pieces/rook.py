@@ -7,11 +7,9 @@ rook_directions = [Vector(sign*vertical,sign*(1 - vertical)) for vertical in [0,
 class Rook(Piece):
     move_directions = rook_directions
     move_vectors = [step*direction for step in range(1,8) for direction in rook_directions]
-    image_file = "Rook.png"
-    unicode = {
-        Black(): '\u265C',
-        White(): '\u2656'
-    }
+
+    def __int__(self) -> int:
+        return 4
 
     def can_move(self, vector: Vector) -> bool:
         vector = abs(vector)

@@ -5,11 +5,6 @@ from .piece import Piece
 
 class King(Piece):
     move_vectors = [Vector(x,y) for x in [-1,0,1] for y in [-1,0,1] if x != 0 or y != 0]
-    image_file = "King.png"
-    unicode = {
-        Black(): '\u265A',
-        White(): '\u2654'
-    }
 
     def can_move(self, vector: Vector) -> bool:
         vector = abs(vector)

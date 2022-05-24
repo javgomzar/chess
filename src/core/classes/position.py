@@ -16,9 +16,6 @@ class Vector:
         else:
             raise VectorError()
 
-    def __hash__(self):
-        return str(self.col) + str(self.row)
-
     def __str__(self):
         return f"({self.col}, {self.row})"
 
@@ -69,6 +66,9 @@ class Position(Vector):
 
     def __str__(self):
         return ascii_lowercase[0:8][self.col] + str(self.row + 1)
+
+    def __hash__(self):
+        return 8*self.col + self.row
 
     def __add__(self, other):
         if isinstance(other, Vector):
