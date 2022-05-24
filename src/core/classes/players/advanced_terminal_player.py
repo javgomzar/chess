@@ -1,5 +1,4 @@
 import re
-
 from ..error_classes.errors import InvalidInput
 from ..board import Board
 from .terminal_player import TerminalPlayer
@@ -8,6 +7,7 @@ from ..ply import Ply
 from ..position import Position
 from ..pieces import Pawn
 from string import ascii_lowercase
+
 
 class AdvancedTerminalPlayer(TerminalPlayer):
     def input_promotion(self, board: Board) -> type:
@@ -81,4 +81,3 @@ class AdvancedTerminalPlayer(TerminalPlayer):
         if len(possible_pieces) == 0:
             raise InvalidInput()
         raise Exception()
-        

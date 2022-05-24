@@ -12,30 +12,6 @@ class Player(ABC):
         self.color = color
 
     @abstractmethod
-    def show_board(self, board: Board) -> None:
-        pass
-
-    @abstractmethod
-    def invalid_move(self) -> None:
-        pass
-
-    @abstractmethod
-    def alert_check(self) -> None:
-        pass
-
-    @abstractmethod
-    def win(self) -> None:
-        pass
-
-    @abstractmethod
-    def lose(self) -> None:
-        pass
-
-    @abstractmethod
-    def draw(self) -> None:
-        pass
-
-    @abstractmethod
     def input_ply(self, board: Board) -> Ply:
         pass
 

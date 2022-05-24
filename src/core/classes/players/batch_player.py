@@ -11,27 +11,12 @@ class BatchPlayer(Player):
         self.ply_list = ply_list
         self.index = 0
 
-    def show_board(self, board: Board) -> None:
-        print(board)
-
-    def invalid_move(self) -> None:
-        raise InvalidMove("Invalid move")
-
-    def alert_check(self) -> None:
-        print("Check!")
-
-    def win(self) -> None:
-        print(f"{self.color} wins")
-
-    def lose(self) -> None:
-        print(f"{self.color} looses")
-
-    def draw(self) -> None:
-        print("Draw")
-
     def input_ply(self, board: Board) -> Ply:
         self.index += 1
         return self.ply_list[self.index-1]
 
     def input_promotion(self, board: Board) -> type:
         return Queen
+
+    def reset(self):
+        self.index = 0

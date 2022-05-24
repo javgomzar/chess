@@ -1,7 +1,6 @@
 import sys
 sys.path.append(sys.path[0] + '\\..')
 
-
 import unittest as ut
 from src.core.classes.position import *
 from src.core.classes.color import *
@@ -13,12 +12,14 @@ from src.core.classes.game import *
 from src.core.classes.error_classes.errors import InvalidMove
 from src.core.classes.game_modes.standard import Standard
 from src.core.classes.players.batch_player import BatchPlayer
+from src.core.classes.board_view import TextView
+
 
 class TestChess(ut.TestCase):
     def test_game1(self):
         """Quick mate"""
         print("\nGame 1:\n")
-        game = Game(Standard(), 
+        game = Game(Standard(), TextView(),
         BatchPlayer(White(),[
             Ply(White(), Position.from_notation('e2'), Position.from_notation('e4')),
             Ply(White(), Position.from_notation('f1'), Position.from_notation('c4')),
@@ -36,7 +37,7 @@ class TestChess(ut.TestCase):
     def test_game2(self):
         """Repetition tie"""
         print("\nGame 2: \n")
-        game = Game(Standard(), 
+        game = Game(Standard(), TextView(),
         BatchPlayer(White(),[
             Ply(White(), Position.from_notation('g1'), Position.from_notation('f3')),
             Ply(White(), Position.from_notation('f3'), Position.from_notation('g1')),
@@ -59,7 +60,7 @@ class TestChess(ut.TestCase):
     def test_game3(self):
         """Testing castling checks"""
         print("\nGame 3: \n")
-        game = Game(Standard(), 
+        game = Game(Standard(), TextView(),
         BatchPlayer(White(),[
             Ply(White(), Position.from_notation('e2'), Position.from_notation('e4')),
             Ply(White(), Position.from_notation('f1'), Position.from_notation('b5')),
@@ -78,7 +79,7 @@ class TestChess(ut.TestCase):
     def test_game4(self):
         """Testing pawn promotion"""
         print("\nGame 4: \n")
-        game = Game(Standard(), 
+        game = Game(Standard(), TextView(),
         BatchPlayer(White(),[
             Ply(White(), Position.from_notation('f2'), Position.from_notation('f4')),
             Ply(White(), Position.from_notation('f4'), Position.from_notation('f5')),
