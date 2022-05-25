@@ -6,6 +6,10 @@ from ..ply import Ply
 from ..board import Board
 
 class FiftyMoves(FinishCondition):
+    """
+    Finishes in a draw when 50 moves have been made without moving a pawn
+    or taking a piece.
+    """
     def __init__(self) -> None:
         super(Handler).__init__()
         self.count = 0

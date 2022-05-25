@@ -11,10 +11,12 @@ class Promote:
     vector : Vector
     is_filled : bool = field(default=False, init=False)
 
-    def execute(self, piece_manager : PieceManager) -> None:
+    def process(self, piece_manager : PieceManager) -> None:
         self.from_position = piece_manager.get_position(self.piece)
         self.to_position = self.from_position + self.vector
         self.move = Move(self.piece, self.vector)
+
+    def execute(self, piece_manager : PieceManager) -> None:
         self.move.execute(piece_manager)
         if self.is_filled:
             self.to_piece = self.to_piece_class(self.piece.color, has_moved=True)
@@ -29,7 +31,3 @@ class Promote:
         self.move.redo(piece_manager)
         if self.is_filled:
             piece_manager.replace(self.piece, self.to_piece)
-
-    # def choose(self) -> None:
-    #     self.to_piece_class = Input.promotion()
-    #     self.is_filled = True

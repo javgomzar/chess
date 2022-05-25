@@ -1,3 +1,4 @@
+
 class VectorError(ValueError):
     pass
 

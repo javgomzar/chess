@@ -1,6 +1,5 @@
 from ..pieces import Knight
 from ..actions import ActionController
-from src.config.constants import EMPTY_BOARD_STRING
 from ..position import Position
 
 
@@ -10,19 +9,10 @@ class Board(ActionController):
     the board will start as the standard chess initial board.
     """
 
-    def __str__(self) -> str:
-        result = EMPTY_BOARD_STRING
-        for row in range(0,8):
-            for col in range(0,8):
-                piece = self.get_piece(Position(col,row))
-                if piece:
-                    symbol = str(piece)
-                else:
-                    symbol = "  "
-                result = result.replace(str(row+1) + str(col+1), symbol)
-        return result
-
     def string_hash(self) -> str:
+        """
+        Returns a string with a representation of the state of the board.
+        """
         hash = ''
         for row in range(0,8):
             for col in range(0,8):

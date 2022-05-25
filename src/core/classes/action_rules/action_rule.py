@@ -4,7 +4,7 @@ from ..actions import Action
 from ..rules import Rule
 from ..ply import Ply
 from ..board import Board
-import logging
+
 
 class ActionRule(Rule):
     def process(self, ply: Ply, board: Board) -> None:

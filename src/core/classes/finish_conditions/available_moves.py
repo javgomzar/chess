@@ -5,6 +5,9 @@ from ..ply import Ply
 
 
 class AvailableMoves(FinishCondition):
+    """
+    Finishes the game if there are no available moves.
+    """
     def __init__(self, game_mode: type) -> None:
         self._next = None
         self.game_mode = game_mode

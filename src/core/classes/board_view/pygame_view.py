@@ -8,6 +8,9 @@ white = (255,255,255)
 black = (0,0,0)
 
 class PygameView(BoardView):
+    """
+    View for a chess board using pygame.
+    """
     height: int = 400
     width: int = 600
     background_path: str = "./media/board.png"

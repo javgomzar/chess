@@ -1,6 +1,4 @@
-import re
 from dataclasses import dataclass, field
-
 from .actions import Action
 from .pieces import Piece
 from .color import Color
@@ -12,6 +10,7 @@ class Ply:
     """
     Class for a chess ply. This class acts as a container.
     """
+
     color : Color = field(init=True)
     from_position : Position = field(init=True)
     to_position : Position = field(init=True)

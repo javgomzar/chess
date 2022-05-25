@@ -7,7 +7,11 @@ from ..board import Board
 
 
 class DeadPosition(FinishCondition):
-    """This one is abstract as heck"""
+    """
+    Finishes the game if a dead position has been reached. This includes
+    when no mates are possible due to a lack of pieces, or if the kings are
+    locked to each side of the board.
+    """
     def process(self, ply: Ply, board: Board) -> None:
         self.black_pieces = board.get_pieces(Black(), is_active=True)
         self.white_pieces = board.get_pieces(White(), is_active=True)

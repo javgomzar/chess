@@ -7,13 +7,14 @@ from .action import Action
 class Batch:
     commands : list[Action]
 
-    # def __len__(self):
-    #     return len(self.commands)
-
     def __iter__(self):
         return iter(self.commands)
 
-    def execute(self, piece_manager : PieceManager):
+    def process(self, piece_manager: PieceManager):
+        for action in self.commands:
+                action.process(piece_manager)
+
+    def execute(self, piece_manager: PieceManager):
         completed_commands = []
         try:
             for action in self.commands:

@@ -5,13 +5,17 @@ from ..pieces import PieceManager
 
 class Action(Protocol):
     @abstractmethod
-    def execute(self, piece_manager : PieceManager) -> None:
+    def process(self, piece_manager: PieceManager) -> None:
+        pass
+    
+    @abstractmethod
+    def execute(self, piece_manager: PieceManager) -> None:
         pass
 
     @abstractmethod
-    def undo(self, piece_manager : PieceManager) -> None:
+    def undo(self, piece_manager: PieceManager) -> None:
         pass
 
     @abstractmethod
-    def redo(self, piece_manager : PieceManager) -> None:
+    def redo(self, piece_manager: PieceManager) -> None:
         pass

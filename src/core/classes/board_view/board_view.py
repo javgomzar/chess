@@ -4,6 +4,9 @@ from ..color import Color
 
 
 class BoardView:
+    """
+    Class that manages how to view a board.
+    """
     @abstractmethod
     def show_board(self, board: Board) -> None:
         pass
