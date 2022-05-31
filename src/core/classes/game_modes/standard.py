@@ -38,14 +38,18 @@ class Standard(GameMode):
 
     @classmethod
     def validate(self, ply: Ply, board: Board) -> bool:
+        if ply.is_valid != None:
+            return ply.is_valid
         try:
             self.rules[0].handle(ply, board)
             self.action_rules[0].handle(ply, board)
         except InvalidMove:
+            ply.is_valid = False
             return False
         except Exception as err:
             raise err
         else:
+            ply.is_valid = True
             return True
 
     def is_finished(self, ply: Ply, board: Board) -> FinalState:

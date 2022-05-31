@@ -8,7 +8,7 @@ import logging
 
 def main():
     logging.basicConfig(level=logging.DEBUG)
-    view = PygameView()
+    view = PygameView(Standard())
     game = Game(Standard(), view, PygamePlayer(White(), view), PygamePlayer(Black(), view))
     game.main_loop()
 
