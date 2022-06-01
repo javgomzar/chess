@@ -1,11 +1,11 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 
 from ..game_modes import GameMode
 from ..board import Board
 from ..color import Color
 
 
-class BoardView:
+class BoardView(ABC):
     """
     Class that manages how to view a board.
     """
@@ -36,8 +36,4 @@ class BoardView:
 
     @abstractmethod
     def draw(self) -> None:
-        pass
-
-    @abstractmethod
-    def invalid_move(self) -> None:
         pass

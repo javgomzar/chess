@@ -46,7 +46,7 @@ class Game():
                     if self.validate(ply):
                         break
                     else:
-                        self.board_view.invalid_move()
+                        self.board_view.alert_invalid_move()
 
                 if isinstance(ply.action, Promote):
                     ply.action.to_piece_class = player.input_promotion(self.board)

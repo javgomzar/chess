@@ -4,11 +4,12 @@ from ..game_modes import GameMode
 from ..pieces import *
 from ..color import *
 from ..board import Board
+from ..check import Check
 
 
 white = (255,255,255)
 black = (0,0,0)
-light_red = (255,100,100)
+red = (255,0,0)
 
 class PygameView(BoardView):
     """
@@ -50,18 +51,17 @@ class PygameView(BoardView):
         path = self.pieces_paths[piece.color][piece.__class__]
         return pygame.image.load(path)
 
+    def blit_piece(self, piece: Piece, position: Position) -> None:
+        self.screen.blit(self.get_image(piece), self.to_coordinates(position))
+
     def blit_active_pieces(self, board: Board) -> None:
-        for x in range(0,8):
-            for y in range(0,8):
-                position = Position(x,y)
-                piece = board.get_piece(position)
-                if piece:
-                    self.screen.blit(self.get_image(piece), self.to_coordinates(position))
+        for piece,position in [(piece,board.get_position(piece)) for piece in board.get_pieces(is_active=True)]:
+            self.blit_piece(piece, position)
 
     def blit_inactive_pieces(self, board: Board) -> None:
         for x,y,color in [(400,0,White()),(400,120,Black())]:
             inactive_pieces = sorted(board.get_pieces(color=color,is_active=False), key=int)
-            for piece in    inactive_pieces:
+            for piece in inactive_pieces:
                 self.screen.blit(self.get_image(piece), (x,y))
                 if x == 560:
                     x = 400
@@ -69,9 +69,21 @@ class PygameView(BoardView):
                 else:
                     x += 40
 
+    def alert_check(self) -> None:
+        print("Check")
+
+    def alert_invalid_move(self) -> None:
+        print("Invalid move")
+
     def show_board(self, board: Board) -> None:
         # Blit background
         self.screen.blit(self.bg, (0,0))
+
+        # Blit red square if the king is under check
+        for color in [White(), Black()]:
+            king_position = self.to_coordinates(board.get_king_position(color))
+            if Check.is_check(color, board):
+                pygame.draw.rect(self.screen, red, (*king_position, 50, 50))
 
         self.blit_active_pieces(board)
 

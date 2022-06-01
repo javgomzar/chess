@@ -23,3 +23,13 @@ class Board(ActionController):
                     hash += color_hash + piece_hash
                 hash += '-'
         return hash
+
+    def copy(self):
+        """
+        Returns a copy with the same pieces and same undo history. Redo history is cleared.
+        """
+        new_instance = self.__class__()
+        for piece in self:
+            new_instance.add(piece.copy(), self.get_position(piece))
+        new_instance.undo_stack = self.undo_stack
+        return new_instance

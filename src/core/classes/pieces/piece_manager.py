@@ -74,9 +74,3 @@ class PieceManager:
         if piece_type:
             pieces = [piece for piece in pieces if isinstance(piece, piece_type)]
         return pieces
-
-    def copy(self):
-        new_instance = self.__class__()
-        for piece in self:
-            new_instance.add(piece.copy(), self.get_position(piece))
-        return new_instance
