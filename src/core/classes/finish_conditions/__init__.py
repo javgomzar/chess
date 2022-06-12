@@ -5,3 +5,5 @@ from .dead_position import DeadPosition
 from .finish_condition import FinishCondition
 from .fifty_moves import FiftyMoves
 from .available_moves import AvailableMoves
+from .enough_pieces import EnoughPieces
+from .locked_kings import LockedKings

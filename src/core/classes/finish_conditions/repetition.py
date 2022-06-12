@@ -14,7 +14,7 @@ class Repetition(FinishCondition):
         self.counter = {}
 
     def process(self, ply: Ply, board: Board) -> None:
-        board_hash = board.string_hash()
+        board_hash = str(board)
         last_piece = ply.piece
         if isinstance(last_piece, Pawn) or ply.taken_piece:
             self.counter = {}
@@ -24,7 +24,7 @@ class Repetition(FinishCondition):
             self.counter[board_hash] = 1
 
     def condition(self, ply: Ply, board: Board) -> bool:
-        board_hash = board.string_hash()
+        board_hash = str(board)
         return self.counter[board_hash] == 3
         
     def get_final_state(self, ply: Ply, board: Board) -> FinalState:

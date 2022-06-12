@@ -1,6 +1,6 @@
 from ..color import Color
 from . import Piece, King
-from src.core.classes.position import Position
+from ..position import Position
 from src.utils import extract
 
 
@@ -10,9 +10,12 @@ class PieceManager:
     piece_positions : dict[Piece, Position]
     _last_id : int
 
-    def __init__(self) -> None:
+    def __init__(self, pieces: list[tuple[Piece,Position]]=[]) -> None:
         self._last_id = 0
         self.piece_positions = {}
+
+        for piece,position in pieces:
+            self.add(piece, position)
 
     def __contains__(self, piece: Piece) -> bool:
         for try_piece in self:
@@ -62,7 +65,7 @@ class PieceManager:
     def get_king_position(self, color: Color) -> Position:
         return extract([self.get_position(piece) for piece in self.get_pieces(color) if isinstance(piece, King)])
 
-    def get_pieces(self, color : Color = None, is_active : bool = None, piece_type: type = None) -> list[Piece]:
+    def get_pieces(self, color : Color = None, is_active : bool = None, piece_type: type = None, exclude_type: type = None) -> list[Piece]:
         pieces = self.__iter__()
         if color:
             pieces = [piece for piece in pieces if piece.color == color]
@@ -73,4 +76,7 @@ class PieceManager:
                 pieces = [piece for piece in pieces if not self.get_position(piece)]
         if piece_type:
             pieces = [piece for piece in pieces if isinstance(piece, piece_type)]
-        return pieces
+        if exclude_type:
+            pieces = [piece for piece in pieces if not isinstance(piece, exclude_type)]
+
+        return sorted(pieces, key=int)

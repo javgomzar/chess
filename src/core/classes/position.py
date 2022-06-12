@@ -15,10 +15,13 @@ class Position(Vector):
     def __repr__(self):
         return f"<{self.__class__.__name__} object : ({self.col}, {self.row}), '{self.__str__()}'>"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return ascii_lowercase[0:8][self.col] + str(self.row + 1)
 
-    def __hash__(self):
+    def __hash__(self) -> int:
+        return 8*self.col + self.row
+
+    def __int__(self):
         return 8*self.col + self.row
 
     def __add__(self, other):

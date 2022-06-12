@@ -1,5 +1,6 @@
-from ..pieces.piece_manager import PieceManager
+from ..pieces import PieceManager, Piece
 from .action import Action
+from ..position import Position
 
 
 class ActionController(PieceManager):
@@ -11,8 +12,8 @@ class ActionController(PieceManager):
     undo_stack : list[Action]
     redo_stack : list[Action]
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, pieces: list[tuple[Piece,Position]]=[]):
+        super().__init__(pieces)
         self.undo_stack = []
         self.redo_stack = []
 
