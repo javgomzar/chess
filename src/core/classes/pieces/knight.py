@@ -1,5 +1,4 @@
-from ..color import Black, White
-from src.core.classes.position import Vector
+from ..vector import Vector
 from .piece import Piece
 
 

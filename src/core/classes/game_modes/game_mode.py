@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod, abstractclassmethod
+
 from ..finish_conditions import FinalState
 from ..pieces import Piece
 from ..ply import Ply

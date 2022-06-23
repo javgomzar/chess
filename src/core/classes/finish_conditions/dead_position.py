@@ -1,10 +1,11 @@
+from ..ply import Ply
+from ..board import Board
+
 from .enough_pieces import EnoughPieces
 from .finish_condition import FinishCondition
 from .batch_finish_condition import BatchFinishCondition
 from .final_states import FinalState, Draw
 from .locked_kings import LockedKings
-from ..ply import Ply
-from ..board import Board
 
 
 class DeadPosition(BatchFinishCondition):

@@ -1,9 +1,10 @@
 from ..actions import Action, Promote
-from ..position import Position, Vector
-from .action_rule import ActionRule
 from ..pieces import Pawn
 from ..ply import Ply
 from ..board import Board
+
+from .action_rule import ActionRule
+
 
 class PromoteRule(ActionRule):
     def validate(self, ply: Ply, board: Board) -> bool:

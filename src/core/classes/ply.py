@@ -1,8 +1,10 @@
 from dataclasses import dataclass, field
+
 from .actions import Action
 from .pieces import Piece
 from .color import Color
-from .position import Position, Vector
+from .position import Position
+from .vector import Vector
 
 
 @dataclass

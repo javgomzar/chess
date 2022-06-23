@@ -1,6 +1,7 @@
 from dataclasses import dataclass
+
 from ..pieces import PieceManager
-from src.core.classes.position import Position
+from ..position import Position
 from ..pieces import Pawn
 
 

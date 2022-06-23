@@ -3,7 +3,6 @@ from .player import Player
 from ..color import Color
 from ..ply import Ply
 from ..board import Board
-from ..error_classes import InvalidMove
 
 class BatchPlayer(Player):
     def __init__(self, color: Color, ply_list: list[Ply]):

@@ -1,9 +1,10 @@
-from .finish_condition import FinishCondition
-from .final_states import FinalState, Draw
 from ..ply import Ply
 from ..board import Board
 from ..color import *
 from ..pieces import King, Knight, Bishop
+
+from .finish_condition import FinishCondition
+from .final_states import FinalState, Draw
 
 
 class EnoughPieces(FinishCondition):

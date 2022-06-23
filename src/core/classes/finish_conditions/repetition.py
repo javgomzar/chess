@@ -1,9 +1,10 @@
 from ..handler import Handler
-from .finish_condition import FinishCondition
 from ..pieces import Pawn
 from ..board import Board
-from .final_states import Draw, FinalState
 from ..ply import Ply
+
+from .final_states import Draw, FinalState
+from .finish_condition import FinishCondition
 
 
 class Repetition(FinishCondition):

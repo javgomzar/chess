@@ -1,7 +1,8 @@
 from ..pieces import Knight
-from .rule import Rule
 from ..ply import Ply
 from ..board import Board
+
+from .rule import Rule
 
 
 class Block(Rule):

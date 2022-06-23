@@ -1,4 +1,5 @@
 from abc import abstractmethod
+
 from ..error_classes import InvalidMove
 from ..actions import Action
 from ..rules import Rule

@@ -1,6 +1,6 @@
-from ..color import Black, White
-from src.core.classes.position import Vector
+from ..vector import Vector
 from .piece import Piece
+
 
 rook_directions = [Vector(sign*vertical,sign*(1 - vertical)) for vertical in [0,1] for sign in [-1,1]]
 

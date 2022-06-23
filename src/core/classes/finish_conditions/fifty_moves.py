@@ -1,9 +1,10 @@
 from ..pieces.pawn import Pawn
 from ..handler import Handler
-from .finish_condition import FinishCondition
-from .final_states import FinalState, Draw
 from ..ply import Ply
 from ..board import Board
+
+from .finish_condition import FinishCondition
+from .final_states import FinalState, Draw
 
 class FiftyMoves(FinishCondition):
     """

@@ -1,8 +1,8 @@
-from src.core.classes.error_classes.errors import PositionError
-from ..color import Color, Black, White
-from src.core.classes.position import Vector
+from ..error_classes import PositionError
+from ..vector import Vector
+from ..position import Position
+from ..color import Color
 from .piece import Piece
-from ..position import Position, Vector
 
 
 class Pawn(Piece):

@@ -1,15 +1,18 @@
 import pygame
-from .board_view import BoardView
+
 from ..game_modes import GameMode
 from ..pieces import *
 from ..color import *
 from ..board import Board
 from ..check import Check
 
+from .board_view import BoardView
+
 
 white = (255,255,255)
 black = (0,0,0)
 red = (255,0,0)
+
 
 class PygameView(BoardView):
     """

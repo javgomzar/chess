@@ -1,11 +1,12 @@
 import pygame
 
 from ..board_view import PygameView
-from .player import Player
 from ..board import Board
 from ..ply import Ply
 from ..color import Color
 from ..pieces import Queen
+
+from .player import Player
 
 blue = (0,0,255)
 

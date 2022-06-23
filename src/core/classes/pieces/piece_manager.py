@@ -1,7 +1,11 @@
-from ..color import Color
-from . import Piece, King
-from ..position import Position
 from src.utils import extract
+
+from ..color import Color
+from ..position import Position
+
+from .piece import Piece
+from .king import King
+
 
 
 class PieceManager:

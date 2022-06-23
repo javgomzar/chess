@@ -7,6 +7,7 @@ from ..action_rules import *
 from ..color import *
 from ..finish_conditions import *
 from ..ply import Ply
+
 from .game_mode import GameMode
 
 

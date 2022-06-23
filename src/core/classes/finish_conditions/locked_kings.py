@@ -1,11 +1,11 @@
-from .finish_condition import FinishCondition
-from .final_states import Draw, FinalState
 from ..ply import Ply
 from ..board import Board
 from ..pieces import Pawn, King
 from ..color import *
 from ..error_classes import PositionError
 
+from .finish_condition import FinishCondition
+from .final_states import Draw, FinalState
 
 
 class LockedKings(FinishCondition):
@@ -21,9 +21,6 @@ class LockedKings(FinishCondition):
 
         self.unavailable_positions = {color: unavailable_positions[color] for color in [Black(), White()]}
         self.seeds = {color: [position for position in self.unavailable_positions[color] if position.col == 0 or position.col == 7] for color in [Black(),White()]}
-
-        print(self.unavailable_positions)
-        print(self.seeds)
 
     def condition(self, ply: Ply, board: Board) -> bool:
         # Only pawns left
@@ -41,9 +38,7 @@ class LockedKings(FinishCondition):
 
         paths = 0
         for color in [Black(), White()]:
-            print(f"Color: {color}")
             for seed in self.seeds[color]:
-                print(f"Seed: {seed}")
                 self.seeds[color].remove(seed)
                 if self.path_established(seed, color):
                     paths += 1

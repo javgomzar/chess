@@ -1,8 +1,9 @@
-from .action_rule import ActionRule
 from ..actions import Action, Move
 from ..ply import Ply
 from ..board import Board
 from ..pieces import Pawn
+
+from .action_rule import ActionRule
 
 
 class MoveRule(ActionRule):

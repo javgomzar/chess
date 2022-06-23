@@ -1,4 +1,3 @@
-from ..position import Position
 from ..finish_conditions import FinishCondition, FinalState, Draw, Win, Check
 from ..board import Board
 from ..ply import Ply

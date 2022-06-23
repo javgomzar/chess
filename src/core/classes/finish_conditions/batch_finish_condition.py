@@ -1,6 +1,7 @@
-from .finish_condition import FinishCondition
 from ..ply import Ply
 from ..board import Board
+
+from .finish_condition import FinishCondition
 
 
 class BatchFinishCondition(FinishCondition):

@@ -1,5 +1,5 @@
-from src.core.classes.position import Position, Vector
-from src.config.constants import MEDIA_PATH
+from .position import Position
+from .vector import Vector
 from src.core.metaclasses.singleton import Singleton
 
 
@@ -9,7 +9,6 @@ class Color(metaclass=Singleton):
 
 
 class Black(Color):
-    image_folder_path = MEDIA_PATH + "Black/"
     pawn_row = 6
     king_row = 7
     pawn_direction = Vector(0,-1)
@@ -23,7 +22,6 @@ class Black(Color):
 
 
 class White(Color):
-    image_folder_path = MEDIA_PATH + "White/"
     pawn_row = 1
     king_row = 0
     pawn_direction = Vector(0,1)

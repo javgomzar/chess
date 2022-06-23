@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from ..color import Color
 from ..board import Board
 from ..pieces import Queen
-from src.core.classes.ply import Ply
+from ..ply import Ply
 
 
 class Player(ABC):

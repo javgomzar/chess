@@ -1,11 +1,12 @@
 from ..actions import Action, Castle, Move
 from ..position import Position, Vector
-from .action_rule import ActionRule
 from ..pieces import King, Rook
 from ..ply import Ply
 from ..board import Board
 from ..finish_conditions import Check
 from ..error_classes import InvalidMove
+
+from .action_rule import ActionRule
 
 
 class CastleRule(ActionRule):

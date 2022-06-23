@@ -1,7 +1,9 @@
-from ..color import Color
-from src.core.classes.position import Position, PositionError, Vector
-from PIL import Image
 from abc import ABC, abstractmethod
+
+from ..color import Color
+from ..position import Position
+from ..error_classes import PositionError
+from ..vector import Vector
 
 
 class Piece(ABC):

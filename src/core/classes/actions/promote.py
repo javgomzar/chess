@@ -1,8 +1,10 @@
 from dataclasses import dataclass, field
-from .move import Move
+
 from ..pieces import PieceManager
-from src.core.classes.position import Vector
+from ..vector import Vector
 from ..pieces import Pawn
+
+from .move import Move
 
 
 @dataclass

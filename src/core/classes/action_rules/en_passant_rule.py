@@ -1,10 +1,11 @@
 from ..color import Black
-from .action_rule import ActionRule
 from ..actions import Action, EnPassant
 from ..position import Position
 from ..pieces import Pawn
 from ..ply import Ply
 from ..board import Board
+
+from .action_rule import ActionRule
 
 
 class EnPassantRule(ActionRule):

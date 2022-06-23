@@ -1,5 +1,7 @@
 from dataclasses import dataclass
+
 from ..pieces import PieceManager
+
 from .action import Action
 
 

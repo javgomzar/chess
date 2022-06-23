@@ -1,5 +1,6 @@
 from ..board import Board
 from ..ply import Ply
+
 from .rule import Rule
 
 

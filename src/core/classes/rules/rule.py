@@ -1,9 +1,9 @@
-from abc import abstractclassmethod, abstractmethod
+from abc import abstractmethod
+
 from ..handler import Handler
 from ..error_classes.errors import InvalidMove
 from ..board import Board
 from ..ply import Ply
-import logging
 
 
 class Rule(Handler):

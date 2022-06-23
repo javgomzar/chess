@@ -1,6 +1,7 @@
 from ..pieces import PieceManager, Piece
-from .action import Action
 from ..position import Position
+
+from .action import Action
 
 
 class ActionController(PieceManager):

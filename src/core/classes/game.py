@@ -9,7 +9,6 @@ from .color import *
 from .board_view import BoardView
 
 
-
 class Game():
     """
     Class for a chess game. To play, use the `play` method.

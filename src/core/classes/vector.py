@@ -1,6 +1,8 @@
 from dataclasses import dataclass
-from .error_classes.errors import VectorError
 from src.utils import sign
+
+from .error_classes.errors import VectorError
+
 
 @dataclass
 class Vector:

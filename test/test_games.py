@@ -58,7 +58,7 @@ class TestChess(ut.TestCase):
         self.assertTrue(game.is_finished and isinstance(game.final_state, Draw))
 
     def test_game3(self):
-        """Testing castling checks"""
+        """Castling checks"""
         print("\nGame 3: \n")
         game = Game(Standard(), TextView(),
         BatchPlayer(White(),[
@@ -77,7 +77,7 @@ class TestChess(ut.TestCase):
         self.assertRaises(InvalidMove, game.main_loop)
 
     def test_game4(self):
-        """Testing pawn promotion"""
+        """Pawn promotion"""
         print("\nGame 4: \n")
         game = Game(Standard(), TextView(),
         BatchPlayer(White(),[

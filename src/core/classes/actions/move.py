@@ -1,6 +1,7 @@
 from dataclasses import dataclass
+
 from ..pieces import PieceManager
-from src.core.classes.position import Vector
+from ..vector import Vector
 from ..pieces import Piece
 
 

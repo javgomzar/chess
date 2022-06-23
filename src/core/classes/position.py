@@ -1,5 +1,6 @@
 
 from string import ascii_lowercase
+
 from .error_classes.errors import PositionError
 from .vector import Vector
 

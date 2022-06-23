@@ -1,9 +1,11 @@
 from abc import abstractmethod
 import logging
+
 from ..handler import Handler
 from ..ply import Ply
-from .final_states import FinalState
 from ..board import Board
+
+from .final_states import FinalState
 
 
 class FinishCondition(Handler):

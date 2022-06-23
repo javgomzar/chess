@@ -1,7 +1,8 @@
 from ..board import Board
-from .board_view import BoardView
 from ..color import *
 from ..pieces import *
+
+from .board_view import BoardView
 
 
 EMPTY_BOARD_STRING = "  ╔════╤════╤════╤════╤════╤════╤════╤════╗\n" + \

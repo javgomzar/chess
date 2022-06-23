@@ -1,6 +1,7 @@
 from ..finish_conditions import Check
 from ..board import Board, Move
 from ..ply import Ply
+
 from .rule import Rule
 
 
