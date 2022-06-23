@@ -46,6 +46,7 @@ class PygameView(BoardView):
         self.screen.blit(self.bg, (0,0))
         self.rects = {Position(x,y): pygame.rect.Rect(*self.to_coordinates(Position(x,y)),50,50) for x in range(0,8) for y in range(0,8)}
         self.wait_ms = wait_ms
+        self.game_mode = game_mode
     
     def get_image(self, piece: Piece) -> pygame.Surface:
         path = self.pieces_paths[piece.color][piece.__class__]
@@ -53,6 +54,23 @@ class PygameView(BoardView):
 
     def blit_piece(self, piece: Piece, position: Position) -> None:
         self.screen.blit(self.get_image(piece), self.to_coordinates(position))
+
+    def restore_square(self, position: Position, board: Board):
+        coord = self.to_coordinates(position)
+        self.screen.blit(self.bg, coord, (*coord, 50, 50))
+
+        piece = board.get_piece(position)
+        if piece:
+            self.blit_piece(piece, position)
+
+    def blit_square(self, position: Position, color: tuple, board: Board):
+        s = pygame.Surface((50,50))
+        s.set_alpha(128)
+        s.fill(color)
+        self.screen.blit(s,self.to_coordinates(position))
+        piece = board.get_piece(position)
+        if piece:
+            self.blit_piece(piece, position)
 
     def blit_active_pieces(self, board: Board) -> None:
         for piece,position in [(piece,board.get_position(piece)) for piece in board.get_pieces(is_active=True)]:
@@ -81,9 +99,9 @@ class PygameView(BoardView):
 
         # Blit red square if the king is under check
         for color in [White(), Black()]:
-            king_position = self.to_coordinates(board.get_king_position(color))
+            king_position = board.get_king_position(color)
             if Check.is_check(color, board):
-                pygame.draw.rect(self.screen, red, (*king_position, 50, 50))
+                self.blit_square(board.get_king_position(color), red, board)
 
         self.blit_active_pieces(board)
 
@@ -104,6 +122,6 @@ class PygameView(BoardView):
 
     def lose(self, color: Color) -> None:
         print(f"{color} loses")
-    
+
     def draw(self) -> None:
         print(f"It's a draw")
