@@ -2,11 +2,12 @@ from string import ascii_lowercase
 import re
 
 from ..error_classes import AmbiguousMove
-from ..pieces import piece_class_from_text, Pawn
+from ..pieces import piece_class_from_text, Pawn, Rook
 from ..board import Board
 from ..color import Color
 from ..error_classes import InvalidInput
 from ..position import Position
+from ..rules import Block
 
 from .ply import Ply
 
@@ -54,6 +55,8 @@ def ply_from_notation(color: Color, notation: str, board: Board) -> Ply:
         if len(possible_pieces) > 1:
             if piece_type == Pawn:
                 possible_pieces = [piece for piece in possible_pieces if is_capture == piece.is_capture(to_position - board.get_position(piece))]
+            elif piece_type == Rook:
+                possible_pieces = [piece for piece in possible_pieces if Block.validate(Ply(color, board.get_position(piece), to_position), board)]
             else:
                 raise AmbiguousMove()
         if len(possible_pieces) == 1:
