@@ -9,6 +9,7 @@ from src.core.classes.color import *
 from src.core.classes.pieces import *
 from src.core.classes.board import *
 
+
 class TestChess(ut.TestCase):
 
     def test_checks(self):

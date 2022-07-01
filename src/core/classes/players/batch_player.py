@@ -4,8 +4,9 @@ from ..color import Color
 from ..ply import Ply
 from ..board import Board
 
+
 class BatchPlayer(Player):
-    def __init__(self, color: Color, ply_list: list[Ply]):
+    def __init__(self, color: Color, ply_list: list[Ply] = []):
         self.color = color
         self.ply_list = ply_list
         self.index = 0

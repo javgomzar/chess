@@ -78,5 +78,5 @@ class TextView(BoardView):
     def draw(self) -> None:
         print("It's a draw.")
 
-    def invalid_move(self) -> None:
+    def alert_invalid_move(self) -> None:
         print("Invalid move.")

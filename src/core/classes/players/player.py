@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+
 from ..color import Color
 from ..board import Board
 from ..pieces import Queen

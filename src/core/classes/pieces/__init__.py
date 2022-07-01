@@ -6,3 +6,4 @@ from .pawn import Pawn
 from .queen import Queen
 from .rook import Rook
 from .piece_manager import PieceManager
+from .piece_class import piece_class_from_text
